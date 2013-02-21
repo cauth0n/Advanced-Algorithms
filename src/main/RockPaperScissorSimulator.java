@@ -18,7 +18,7 @@ public class RockPaperScissorSimulator extends Simulator {
 	@Override
 	public Individual ga(Population initialPopulation, Fitness fitness) {
 
-		int repeatCounter = 0;
+		int repeatCounter = 0; 
 		do {
 			Population newPopulation = buildEmptyPopulation();
 			

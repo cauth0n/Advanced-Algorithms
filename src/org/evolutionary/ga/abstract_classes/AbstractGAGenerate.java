@@ -4,4 +4,5 @@ import org.evolutionary.interfaces.generate.Generate;
 
 public abstract class AbstractGAGenerate implements Generate {
 
+
 }

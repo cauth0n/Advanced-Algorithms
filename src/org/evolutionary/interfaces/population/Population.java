@@ -1,6 +1,6 @@
-package population;
+package org.evolutionary.interfaces.population;
 
-import individual.Individual;
+import org.evolutionary.interfaces.individual.Individual;
 
 
 public interface Population {

@@ -1,7 +1,8 @@
 package individual;
 
-public interface Individual {
+import java.util.Map;
 
-	public String getProperty();
+public interface Individual {
+	public Map<String, Boolean> getProperties();
 
 }

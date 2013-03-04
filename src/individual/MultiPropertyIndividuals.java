@@ -1,14 +1,17 @@
 package individual;
 
+import java.util.Map;
 
-public class MultiPropertyIndividuals implements Individual{
+public class MultiPropertyIndividuals implements Individual {
+	protected Map<String, Boolean> properties;
+
+	public MultiPropertyIndividuals(Map<String, Boolean> properties) {
+		this.properties = properties;
+	}
 
 	@Override
-	public String getProperty() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Boolean> getProperties() {
+		return properties;
 	}
-	//protected HashMap<String, boolean> property;
-
 
 }

@@ -1,35 +1,35 @@
 package population;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
+import fitness.Fitness;
 import individual.Individual;
-import individual.RockPaperScissorChoice;
-import individual.SinglePropertyIndividuals;
 
-public class RockPaperScissorPopulation extends SinglePropertyIndividualPopulation {
+import java.util.Collection;
+
+public class RockPaperScissorPopulation implements Population {
+	protected Collection<Individual> population;
+	protected Fitness populationFitness;
 
 	public RockPaperScissorPopulation() {
-		super();
+
+	}
+
+	public RockPaperScissorPopulation(Collection<Individual> population) {
+		this.population = population;
+	}
+
+	public void addIndividualToPopulation(Individual individual) {
+		population.add(individual);
 	}
 
 	@Override
 	public void instantiateEmptyArrayList(Individual individualType) {
-		if (individualType instanceof RockPaperScissorChoice) {
-			population = new ArrayList<RockPaperScissorChoice>();
-		}else{
-			System.out.println("Type error in instantiateEmptyArrayList of RockPaperScissorPopulation");
-		}
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void instantiateEmptySet(Individual individualType) {
-		if (individualType instanceof RockPaperScissorChoice) {
-			population = new HashSet<RockPaperScissorChoice>();
-		}else{
-			System.out.println("Type error in instantiateEmptySet of RockPaperScissorPopulation");
-		}
+		// TODO Auto-generated method stub
 
 	}
 

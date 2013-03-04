@@ -1,9 +1,11 @@
 package individual;
 
-public abstract class RockPaperScissorChoice extends SinglePropertyIndividuals {
-	
-	public RockPaperScissorChoice(String property) {
-		super(property);
+import java.util.Map;
+
+public abstract class RockPaperScissorChoice extends MultiPropertyIndividuals {
+
+	public RockPaperScissorChoice(Map<String, Boolean> properties) {
+		super(properties);
 	}
 
 }

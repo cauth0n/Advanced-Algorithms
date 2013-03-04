@@ -1,5 +1,5 @@
 package org.evolutionary.interfaces.crossover;
 
-public interface CrossOver {
+public interface Crossover {
 
 }

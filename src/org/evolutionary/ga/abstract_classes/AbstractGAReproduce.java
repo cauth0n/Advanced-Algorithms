@@ -1,18 +1,18 @@
 package org.evolutionary.ga.abstract_classes;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-import org.evolutionary.ga.concrete_classes.GAIndividual;
-import org.evolutionary.interfaces.individual.Individual;
 import org.evolutionary.interfaces.reproduce.Reproduce;
 
 public abstract class AbstractGAReproduce implements Reproduce {
 
-	public Individual reproduce(Individual x, Individual y) {
-		
-		
-		Map<String, Boolean> zGenome = new HashMap<String, Boolean>();
-		return new GAIndividual(zGenome);
+	public abstract void assignX(Map<String, Boolean> xGenome, Map<String, Boolean> zGenome, int cutOff);
+
+	public abstract void assignY(Map<String, Boolean> yGenome, Map<String, Boolean> zGenome, int cutOff);
+
+	public int getRandomInt(int numbersToPullFrom) {
+		Random rand = new Random();
+		return rand.nextInt(numbersToPullFrom);
 	}
 }

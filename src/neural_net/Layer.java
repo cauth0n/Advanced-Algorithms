@@ -1,5 +1,6 @@
 package neural_net;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Layer {
@@ -7,6 +8,8 @@ public abstract class Layer {
 	// all connections weights initialized to 1. Arbitrary, and it will change
 	// as the algorithm performs.
 	protected final double initialWeight = 1;
+
+	protected List<Neuron> neurons;
 
 	protected String layerType;
 
@@ -25,8 +28,9 @@ public abstract class Layer {
 	 *            connections. NOT outgoing.
 	 * 
 	 */
-	public Layer(String layerType) {
+	public Layer(String layerType, int numNeurons) {
 		this.layerType = layerType;
+		neurons = new ArrayList<>(numNeurons);
 	}
 
 	/***
@@ -44,10 +48,13 @@ public abstract class Layer {
 	 *            established.
 	 */
 	public abstract void buildLayer(List<Neuron> upStreamNeurons);
-	
 
 	public String getLayerType() {
 		return layerType;
+	}
+
+	public List<Neuron> getNeurons() {
+		return neurons;
 	}
 
 }

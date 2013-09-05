@@ -9,7 +9,6 @@ public abstract class Neuron {
 	}
 
 	public Neuron(ActivationFunction activationFunction) {
-
 		this.activationFunction = activationFunction;
 	}
 

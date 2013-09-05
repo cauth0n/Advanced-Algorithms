@@ -2,7 +2,7 @@ package neural_net;
 
 public abstract class NeuralNetworkType implements NeuralNetwork {
 
-	private NeuralNetStructure neuralNetStructure;
+	protected NeuralNetStructure neuralNetStructure;
 
 	public NeuralNetworkType() {
 

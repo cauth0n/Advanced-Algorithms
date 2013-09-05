@@ -2,13 +2,13 @@ package neural_net;
 
 public class Connection {
 
-	private Neuron toNode;
-	private Neuron fromNode;
+	private Neuron toNeuron;
+	private Neuron fromNeuron;
 	private double weight;
 
-	public Connection(Neuron toNode, Neuron fromNode, double weight) {
-		this.toNode = toNode;
-		this.fromNode = fromNode;
+	public Connection(Neuron fromNeuron, Neuron toNeuron, double weight) {
+		this.toNeuron = toNeuron;
+		this.fromNeuron = fromNeuron;
 		this.weight = weight;
 	}
 
@@ -21,11 +21,11 @@ public class Connection {
 	}
 
 	public Neuron getToNode() {
-		return toNode;
+		return toNeuron;
 	}
 
 	public Neuron getFromNode() {
-		return fromNode;
+		return fromNeuron;
 	}
 
 }

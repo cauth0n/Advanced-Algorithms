@@ -1,8 +1,12 @@
 package neural_net;
 
-public class Neuron {
+public abstract class Neuron {
 
 	private ActivationFunction activationFunction;
+
+	public Neuron(double inputValue) {
+
+	}
 
 	public Neuron(ActivationFunction activationFunction) {
 

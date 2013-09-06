@@ -4,18 +4,15 @@ import java.util.ArrayList;
 
 public class TwoLayeredStructure extends NeuralNetStructure {
 
-	private final int numLayers = 2; // two layered network means 2 layers.
-
-	public TwoLayeredStructure(int numInputNeurons, int numOutputNeurons) {
-		super(numInputNeurons, numOutputNeurons);
+	public TwoLayeredStructure(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, int numOutputNeurons) {
+		super(numInputNeurons, numOutgoingConnectionsPerInputNeuron, numOutputNeurons);
 	}
 
 	@Override
 	public void constructLayers() {
-		layers = new ArrayList<>(numLayers);
-		layers.add(inputLayer);
-		layers.add(outputLayer);
-
+		layers = new ArrayList<>();
+		layers.add(inputLayer); // layer 0
+		layers.add(outputLayer); // layer 1
 	}
 
 }

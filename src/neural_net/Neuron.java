@@ -2,14 +2,10 @@ package neural_net;
 
 public abstract class Neuron {
 
-	private ActivationFunction activationFunction;
+	private NeuronFunction neuronFunction;
 
-	public Neuron(double inputValue) {
-
-	}
-
-	public Neuron(ActivationFunction activationFunction) {
-		this.activationFunction = activationFunction;
+	public Neuron(NeuronFunction neuronFunction) {
+		this.neuronFunction = neuronFunction;
 	}
 
 }

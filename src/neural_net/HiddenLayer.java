@@ -1,29 +1,41 @@
 package neural_net;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HiddenLayer extends Neuron {
-	
+import driver.Simulator;
 
-	private List<Connection> connections;
+public class HiddenLayer extends Layer {
 
-
-	public HiddenLayer(ActivationFunction activationFunction) {
-		super(activationFunction);
-		// TODO Auto-generated constructor stub
-	}
-
-	public List<Double> getWeightVector() {
-		List<Double> weightVector = new ArrayList<>(connections.size());
-		for (int i = 0; i < connections.size(); i++) {
-			weightVector.add(connections.get(i).getWeight());
-		}
-		return weightVector;
+	public HiddenLayer(int numNeurons, int numOutgoingConnectionsPerNeuron) {
+		super(numNeurons, numOutgoingConnectionsPerNeuron);
+		layerType = "HIDDEN";
 	}
 
 	public List<Connection> getConnections() {
 		return connections;
+	}
+
+	@Override
+	public void buildLayer(List<Neuron> downStreamNeurons) {
+		if (downStreamNeurons.size() != connections.size()) {
+			System.out.println("Downstream neurons do not equal the connections coming in to them. Critical. This is in HiddenLayer.");
+		}
+		for (int i = 0; i < neurons.size(); i++) {
+			neurons.add(new ActivatingNeuron(Simulator.activationFunction));
+		}
+		for (int i = 0; i < neurons.size(); i++) {
+
+			if (numOutgoingConnectionsPerInputNeuron == downStreamNeurons.size()) {
+				for (int j = 0; j < downStreamNeurons.size(); j++) {
+					connections.add(new Connection(neurons.get(i), downStreamNeurons.get(j), initialWeight));
+				}
+			} else {
+				// Assume numOutgoingConnections = downstream neurons. If not, I
+				// will need to implement some method to randomly assign
+				// connections
+				// to downstream neurons.
+			}
+		}
 	}
 
 }

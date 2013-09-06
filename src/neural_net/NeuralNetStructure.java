@@ -4,23 +4,29 @@ import java.util.List;
 
 public abstract class NeuralNetStructure {
 
-	public final String input = "INPUT";
-	public final String output = "OUTPUT";
-	public final String hidden = "HIDDEN";
-
-	protected List<InputLayer> layers;
+	protected List<Layer> layers;
 
 	protected InputLayer inputLayer;
-	protected InputLayer outputLayer;
+	protected OutputLayer outputLayer;
 
 	protected int numInputNeurons;
 	protected int numOutputNeurons;
 
-	public NeuralNetStructure(int numInputNeurons, int numOutputNeurons) {
-		inputLayer = new InputLayer(input, numInputNeurons);
-		outputLayer = new OutputLayer(output, numOutputNeurons);
+	public NeuralNetStructure(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, int numOutputNeurons) {
+		inputLayer = new InputLayer(numInputNeurons, numOutgoingConnectionsPerInputNeuron);
+		outputLayer = new OutputLayer(numOutputNeurons);
 	}
 
 	public abstract void constructLayers();
+
+	public void stitchLayersTogether() {
+		for (int i = layers.size() - 1; i >= 0; i--) {
+			if (i == layers.size() - 1) {// output, downStreamNeurons are null.
+				layers.get(i).buildLayer(null);
+			} else { // evertyhing else.
+				layers.get(i).buildLayer(layers.get(i + 1).getNeuronVector());
+			}
+		}
+	}
 
 }

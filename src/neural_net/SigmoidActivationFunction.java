@@ -12,4 +12,10 @@ public class SigmoidActivationFunction extends ActivationFunction {
 		return 0;
 	}
 
+	@Override
+	public NeuronFunction getFunctionality() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
 }

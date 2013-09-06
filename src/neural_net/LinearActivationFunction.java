@@ -1,8 +1,12 @@
 package neural_net;
 
 public class LinearActivationFunction extends ActivationFunction {
-	
-	
+
+	@Override
+	public NeuronFunction getFunctionality() {
+		// TODO Auto-generated method stub
+		return this;
+	}
 
 	@Override
 	public double operate() {

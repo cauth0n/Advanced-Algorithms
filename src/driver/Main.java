@@ -6,7 +6,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Simulator go = new GASimulator();
+		Simulator go = new Simulator();
 
 	}
 

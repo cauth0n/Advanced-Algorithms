@@ -12,12 +12,14 @@ public abstract class Layer {
 	protected List<Neuron> neurons;
 	protected List<Connection> connections;
 
-	protected int numOutgoingConnectionsPerInputNeuron;
+	protected int numOutgoingConnectionsPerNeuron;
+	protected int numNeurons;
 
 	protected String layerType;
 
 	public Layer(int numNeurons, int numOutgoingConnectionsPerNeuron) {
-		this.numOutgoingConnectionsPerInputNeuron = numOutgoingConnectionsPerNeuron;
+		this.numNeurons = numNeurons;
+		this.numOutgoingConnectionsPerNeuron = numOutgoingConnectionsPerNeuron;
 		neurons = new ArrayList<>(numNeurons);
 		connections = new ArrayList<>(numNeurons * numOutgoingConnectionsPerNeuron);
 	}
@@ -42,6 +44,19 @@ public abstract class Layer {
 			weightVector.add(connections.get(i).getWeight());
 		}
 		return weightVector;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(layerType + ": " + " total neurons: " + neurons.size() + "; connections per neuron: " + (connections.size() / neurons.size()));
+
+		stringBuilder.append("\n{");
+		for (Connection c : connections) {
+			stringBuilder.append(c.toString() + "}, {");
+		}
+		stringBuilder.append("}\n");
+		return stringBuilder.toString();
 	}
 
 }

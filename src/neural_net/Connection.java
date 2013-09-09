@@ -28,4 +28,8 @@ public class Connection {
 		return fromNeuron;
 	}
 
+	public String toString() {
+		return (weight + "");
+	}
+
 }

@@ -1,19 +1,27 @@
 package neural_net;
 
-import java.util.List;
-
 public class PerceptronNeuralNetwork extends NeuralNetworkType {
 
-	private List<NeuralNetStructure> neuralNetStructure;
-
-	public PerceptronNeuralNetwork() {
-
+	public PerceptronNeuralNetwork(int numInputNeurons, int numConnectionsPerInputNeuron, int numOutputNeurons) {
+		super(numInputNeurons, numConnectionsPerInputNeuron, numOutputNeurons);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void buildNetworkStructure() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public NeuralNetworkType getNetworkType() {
+		return this;
+	}
+
+	@Override
+	public void validateStructuralParameters() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

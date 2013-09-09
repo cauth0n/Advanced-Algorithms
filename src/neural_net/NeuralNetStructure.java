@@ -17,7 +17,7 @@ public abstract class NeuralNetStructure {
 		outputLayer = new OutputLayer(numOutputNeurons);
 	}
 
-	public abstract void constructLayers();
+	public abstract void constructInputOutputLayers();
 
 	public void stitchLayersTogether() {
 		for (int i = layers.size() - 1; i >= 0; i--) {
@@ -27,6 +27,14 @@ public abstract class NeuralNetStructure {
 				layers.get(i).buildLayer(layers.get(i + 1).getNeuronVector());
 			}
 		}
+	}
+
+	public List<Layer> getLayers() {
+		return layers;
+	}
+
+	public NeuralNetStructure getNetworkStructure() {
+		return this;
 	}
 
 }

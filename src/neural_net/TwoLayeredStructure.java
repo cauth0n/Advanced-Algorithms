@@ -9,7 +9,7 @@ public class TwoLayeredStructure extends NeuralNetStructure {
 	}
 
 	@Override
-	public void constructLayers() {
+	public void constructInputOutputLayers() {
 		layers = new ArrayList<>();
 		layers.add(inputLayer); // layer 0
 		layers.add(outputLayer); // layer 1

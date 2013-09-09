@@ -4,4 +4,6 @@ public interface NeuralNetwork {
 
 	public void buildNetworkStructure();
 
+	public NeuralNetworkType getNetworkType();
+
 }

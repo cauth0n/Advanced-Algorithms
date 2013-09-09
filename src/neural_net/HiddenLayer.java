@@ -17,24 +17,29 @@ public class HiddenLayer extends Layer {
 
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
-		if (downStreamNeurons.size() != connections.size()) {
-			System.out.println("Downstream neurons do not equal the connections coming in to them. Critical. This is in HiddenLayer.");
-		}
-		for (int i = 0; i < neurons.size(); i++) {
+
+		for (int i = 0; i < numNeurons; i++) {
 			neurons.add(new ActivatingNeuron(Simulator.activationFunction));
 		}
 		for (int i = 0; i < neurons.size(); i++) {
 
-			if (numOutgoingConnectionsPerInputNeuron == downStreamNeurons.size()) {
-				for (int j = 0; j < downStreamNeurons.size(); j++) {
-					connections.add(new Connection(neurons.get(i), downStreamNeurons.get(j), initialWeight));
-				}
-			} else {
-				// Assume numOutgoingConnections = downstream neurons. If not, I
-				// will need to implement some method to randomly assign
-				// connections
-				// to downstream neurons.
+			int numRemainingOutgoingConnectionsPerNeuron = numOutgoingConnectionsPerNeuron;
+			int numRemainingDownStreamNeurons = downStreamNeurons.size() - 1;
+
+			while (numRemainingOutgoingConnectionsPerNeuron >= 0 && numRemainingDownStreamNeurons >= 0) {
+
+				connections.add(new Connection(neurons.get(i), downStreamNeurons.get(numRemainingDownStreamNeurons), initialWeight));
+				numRemainingOutgoingConnectionsPerNeuron--;
+				numRemainingDownStreamNeurons--;
 			}
+
+			// for (int j = 0; j < numOutgoingConnectionsPerNeuron; j++) {
+			// for (int l = 0; l < downStreamNeurons.size(); l++) {
+			// connections.add(new Connection(neurons.get(i),
+			// downStreamNeurons.get(l), initialWeight));
+			// }
+			// }
+
 		}
 	}
 

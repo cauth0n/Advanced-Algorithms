@@ -25,7 +25,7 @@ public class OutputLayer extends Layer {
 	@Override
 	public void buildLayer(List<Neuron> upStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new ActivatingNeuron(Simulator.activationFunction));
+			neurons.add(new ActivatingNeuron((ActivationFunction) NeuralNetworkType.activationFunction));
 			connections.add(new Connection(neurons.get(i), null, initialWeight));
 		}
 	}

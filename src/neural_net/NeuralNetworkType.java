@@ -2,6 +2,8 @@ package neural_net;
 
 public abstract class NeuralNetworkType implements NeuralNetwork {
 
+	public static final NeuronFunction activationFunction = new LinearActivationFunction();
+	public static final NeuronFunction dataFunction = new DataFunction();
 	protected NeuralNetStructure neuralNetStructure;
 	protected int numInputNeurons;
 	protected int numConnectionsPerInputNeuron;

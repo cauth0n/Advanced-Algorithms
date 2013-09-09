@@ -15,7 +15,7 @@ public class InputLayer extends Layer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new DataNeuron(Simulator.dataFunction));
+			neurons.add(new DataNeuron(NeuralNetworkType.dataFunction));
 		}
 		for (int i = 0; i < neurons.size(); i++) {
 

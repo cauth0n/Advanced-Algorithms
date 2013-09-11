@@ -2,8 +2,6 @@ package neural_net;
 
 import java.util.List;
 
-import driver.Simulator;
-
 public class InputLayer extends Layer {
 
 	public InputLayer(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron) {

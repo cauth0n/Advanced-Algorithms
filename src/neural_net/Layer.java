@@ -38,6 +38,19 @@ public abstract class Layer {
 		return neurons;
 	}
 
+	public List<Neuron> getDownstreamNeuronVector() {
+		List<Neuron> downstreamNeuronVector = new ArrayList<>();
+		for (Connection c : connections) {
+			if (c.getToNode() == null) {
+				System.out.println("No downstream connection exists. Error.");
+				break;
+			} else {
+				downstreamNeuronVector.add(c.getToNode());
+			}
+		}
+		return downstreamNeuronVector;
+	}
+
 	public List<Double> getWeightVector() {
 		List<Double> weightVector = new ArrayList<>(connections.size());
 		for (int i = 0; i < connections.size(); i++) {

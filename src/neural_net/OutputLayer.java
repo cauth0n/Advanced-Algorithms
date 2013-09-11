@@ -2,8 +2,6 @@ package neural_net;
 
 import java.util.List;
 
-import driver.Simulator;
-
 public class OutputLayer extends Layer {
 
 	/***

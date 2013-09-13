@@ -2,8 +2,8 @@ package neural_net;
 
 public class ActivatingNeuron extends Neuron {
 
-	public ActivatingNeuron(ActivationFunction activationFunction) {
-		super(activationFunction);
+	public ActivatingNeuron(NeuronFunction neuronFunction) {
+		super(neuronFunction);
 		// TODO Auto-generated constructor stub
 	}
 

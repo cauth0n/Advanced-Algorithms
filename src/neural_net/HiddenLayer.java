@@ -25,20 +25,24 @@ public class HiddenLayer extends Layer {
 			int numRemainingDownStreamNeurons = downStreamNeurons.size() - 1;
 
 			while (numRemainingOutgoingConnectionsPerNeuron >= 0 && numRemainingDownStreamNeurons >= 0) {
-
-				connections.add(new Connection(neurons.get(i), downStreamNeurons.get(numRemainingDownStreamNeurons), initialWeight));
+				Connection c = new Connection(neurons.get(i), downStreamNeurons.get(numRemainingDownStreamNeurons), initialWeight);
+				connections.add(c);
+				neurons.get(i).addOutgoingConnectionFromThisNeuron(c);
 				numRemainingOutgoingConnectionsPerNeuron--;
 				numRemainingDownStreamNeurons--;
 			}
-
-			// for (int j = 0; j < numOutgoingConnectionsPerNeuron; j++) {
-			// for (int l = 0; l < downStreamNeurons.size(); l++) {
-			// connections.add(new Connection(neurons.get(i),
-			// downStreamNeurons.get(l), initialWeight));
-			// }
-			// }
-
+		}
+		for (Neuron n : downStreamNeurons) {
+			for (Connection c : connections) {
+				if (c.getToNeuron() == n) {
+					n.addIncomingConnectionToThisNeuron(c);
+				}
+			}
 		}
 	}
 
+	@Override
+	public void feedForward() {
+		for ()
+	}
 }

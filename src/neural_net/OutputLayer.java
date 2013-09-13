@@ -21,10 +21,12 @@ public class OutputLayer extends Layer {
 	}
 
 	@Override
-	public void buildLayer(List<Neuron> upStreamNeurons) {
+	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
 			neurons.add(new ActivatingNeuron((ActivationFunction) NeuralNetworkType.activationFunction));
 			connections.add(new Connection(neurons.get(i), null, initialWeight));
 		}
+
 	}
+
 }

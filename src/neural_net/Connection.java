@@ -20,11 +20,11 @@ public class Connection {
 		this.weight = weight;
 	}
 
-	public Neuron getToNode() {
+	public Neuron getToNeuron() {
 		return toNeuron;
 	}
 
-	public Neuron getFromNode() {
+	public Neuron getFromNeuron() {
 		return fromNeuron;
 	}
 

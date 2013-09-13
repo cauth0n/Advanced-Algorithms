@@ -41,11 +41,11 @@ public abstract class Layer {
 	public List<Neuron> getDownstreamNeuronVector() {
 		List<Neuron> downstreamNeuronVector = new ArrayList<>();
 		for (Connection c : connections) {
-			if (c.getToNode() == null) {
+			if (c.getToNeuron() == null) {
 				System.out.println("No downstream connection exists. Error.");
 				break;
 			} else {
-				downstreamNeuronVector.add(c.getToNode());
+				downstreamNeuronVector.add(c.getToNeuron());
 			}
 		}
 		return downstreamNeuronVector;
@@ -58,6 +58,8 @@ public abstract class Layer {
 		}
 		return weightVector;
 	}
+
+	public abstract void feedForward();
 
 	@Override
 	public String toString() {

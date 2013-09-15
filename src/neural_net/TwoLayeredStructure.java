@@ -1,11 +1,12 @@
 package neural_net;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TwoLayeredStructure extends NeuralNetStructure {
 
-	public TwoLayeredStructure(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, int numOutputNeurons) {
-		super(numInputNeurons, numOutgoingConnectionsPerInputNeuron, numOutputNeurons);
+	public TwoLayeredStructure(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, List<Double> inputVector, int numOutputNeurons) {
+		super(numInputNeurons, numOutgoingConnectionsPerInputNeuron, inputVector, numOutputNeurons);
 	}
 
 	@Override

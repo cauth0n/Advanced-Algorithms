@@ -7,15 +7,11 @@ public class SigmoidActivationFunction extends ActivationFunction {
 	}
 
 	@Override
-	public double operate() {
+	public double operate(double valueToOperateOn) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
-	public NeuronFunction getFunctionality() {
-		// TODO Auto-generated method stub
-		return this;
-	}
+
 
 }

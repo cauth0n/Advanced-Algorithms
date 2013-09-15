@@ -8,6 +8,7 @@ public abstract class Layer {
 	// all connections weights initialized to 1. Arbitrary, and it will change
 	// as the algorithm performs.
 	protected final double initialWeight = 1;
+	protected final double initialNodeValue = 0;
 
 	protected List<Neuron> neurons;
 	protected List<Connection> connections;
@@ -59,14 +60,18 @@ public abstract class Layer {
 		return weightVector;
 	}
 
-	public abstract void feedForward();
+
 
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(layerType + ": " + " total neurons: " + neurons.size() + "; connections per neuron: " + (connections.size() / neurons.size()));
 
-		stringBuilder.append("\n{");
+		stringBuilder.append("\n<");
+		for (Neuron n : neurons) {
+			stringBuilder.append(n.toString() + ">, <");
+		}
+		stringBuilder.append(">\n{");
 		for (Connection c : connections) {
 			stringBuilder.append(c.toString() + "}, {");
 		}

@@ -12,8 +12,8 @@ public abstract class NeuralNetStructure {
 	protected int numInputNeurons;
 	protected int numOutputNeurons;
 
-	public NeuralNetStructure(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, int numOutputNeurons) {
-		inputLayer = new InputLayer(numInputNeurons, numOutgoingConnectionsPerInputNeuron);
+	public NeuralNetStructure(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, List<Double> inputVector, int numOutputNeurons) {
+		inputLayer = new InputLayer(numInputNeurons, numOutgoingConnectionsPerInputNeuron, inputVector);
 		outputLayer = new OutputLayer(numOutputNeurons);
 	}
 

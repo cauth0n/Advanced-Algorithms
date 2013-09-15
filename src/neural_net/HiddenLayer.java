@@ -17,7 +17,7 @@ public class HiddenLayer extends Layer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new ActivatingNeuron((ActivationFunction) NeuralNetworkType.activationFunction));
+			neurons.add(new Neuron((ActivationFunction) NeuralNetworkType.activationFunction, initialNodeValue));
 		}
 		for (int i = 0; i < neurons.size(); i++) {
 
@@ -41,8 +41,4 @@ public class HiddenLayer extends Layer {
 		}
 	}
 
-	@Override
-	public void feedForward() {
-		for ()
-	}
 }

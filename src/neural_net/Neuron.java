@@ -3,20 +3,22 @@ package neural_net;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Neuron {
+public class Neuron {
 
-	protected NeuronFunction neuronFunction;
+	protected ActivationFunction activationFunction;
 	protected List<Connection> incomingConnectionsToThisNeuron;
 	protected List<Connection> outgoingConnectionsFromThisneuron;
+	protected double neuronValue;
 
-	public Neuron(NeuronFunction neuronFunction) {
-		this.neuronFunction = neuronFunction;
+	public Neuron(ActivationFunction activationFunction, double neuronValue) {
+		this.activationFunction = activationFunction;
+		this.neuronValue = neuronValue;
 		incomingConnectionsToThisNeuron = new ArrayList<>();
 		outgoingConnectionsFromThisneuron = new ArrayList<>();
 	}
 
-	public NeuronFunction getNeuronFunction() {
-		return neuronFunction;
+	public double activate(double ValueToOperateOn) {
+		return activationFunction.operate(ValueToOperateOn);
 	}
 
 	public void addIncomingConnectionToThisNeuron(Connection c) {
@@ -33,6 +35,26 @@ public abstract class Neuron {
 
 	public List<Connection> getOutgoingConnectionsFromThisneuron() {
 		return outgoingConnectionsFromThisneuron;
+	}
+
+	public List<Neuron> getIncomingNeurons() {
+		List<Neuron> retVal = new ArrayList<>();
+		for (Connection c : incomingConnectionsToThisNeuron) {
+			retVal.add(c.getFromNeuron());
+		}
+		return retVal;
+	}
+
+	public double getNeuronValue() {
+		return neuronValue;
+	}
+
+	public void setNodeValue(double nodeValue) {
+		this.neuronValue = nodeValue;
+	}
+
+	public String toString() {
+		return neuronValue + "";
 	}
 
 }

@@ -10,8 +10,8 @@ public abstract class Validation {
 	protected List<DataPoint> trainingDataSet;
 	protected List<DataPoint> testDataSet;
 
-	public Validation(DataPointGenerator dataPointGenerator) {
-		this.dataPointGenerator = dataPointGenerator;
+	public Validation() {
+
 		dataPoints = new ArrayList<>();
 		trainingDataSet = new ArrayList<>();
 		testDataSet = new ArrayList<>();

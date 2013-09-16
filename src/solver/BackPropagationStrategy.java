@@ -1,11 +1,11 @@
 package solver;
 
+import java.util.Scanner;
+
 import neural_net.Connection;
 import neural_net.Layer;
 import neural_net.NeuralNetworkStructure;
-import neural_net.NeuralNetworkModel;
 import neural_net.Neuron;
-import driver.MachineLearningModel;
 
 /**
  * @author cauthon
@@ -16,14 +16,39 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		super(neuralNetStructure);
 	}
 
+	public void mainLoop(int numIterations, double targetOutput) {
+		for (int i = 0; i < numIterations; i++) {
+			feedForward();
+			solve(targetOutput);
+			System.out.println(neuralNetStructure.toString());
+			Scanner in = new Scanner(System.in);
+
+			System.out.println("Press enter to continue");
+			String go = in.next();
+		}
+	}
+
 	@Override
 	public void solve(double targetOutput) {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			switch (l.getLayerType()) {
 			case "OUTPUT":
 				for (Neuron n : l.getNeuronVector()) {
-					double diff = targetOutput - n.getNeuronValue();
+					n.findAndSetError(targetOutput, n.getNeuronValue());
 				}
+				break;
+			case "HIDDEN":
+				for (Neuron n : l.getNeuronVector()) {
+					double value = 0.0;
+					for (int i = 0; i < n.getOutgoingNeurons().size(); i++) {
+						value += n.getOutgoingNeurons().get(i).getErrorAssociatedWithNeuronValue() * n.getOutgoingConnectionsFromThisNeuron().get(i).getWeight();
+					}
+					n.setErrorAssociatedWithNeuronValue(value * (n.getNeuronValue() * (1 - n.getNeuronValue())));
+				}
+
+				break;
+			case "INPUT":
+			default:
 				break;
 			}
 		}
@@ -38,17 +63,15 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 			case "HIDDEN":
 			case "OUTPUT":
 				for (Neuron n : l.getNeuronVector()) {
-					int newNeuronValue = 0;
+					double newNeuronValue = 0;
 					for (Connection prevConnection : n.getIncomingConnectionsToThisNeuron()) {
 						newNeuronValue += prevConnection.getFromNeuron().getNeuronValue() * prevConnection.getWeight();
 						// w*j part
 					}
-					n.setNodeValue(n.activate(newNeuronValue));
+					n.activate(newNeuronValue);
 				}
 				break;
 			}
 		}
-
 	}
-
 }

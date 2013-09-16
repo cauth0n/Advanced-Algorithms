@@ -9,4 +9,6 @@ public interface MachineLearningAlgorithmStrategy {
 
 	public abstract void solvingChain(double targetOutput);
 
+	public abstract void mainLoop(int numIterations, double targetValue);
+
 }

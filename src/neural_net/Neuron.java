@@ -11,6 +11,7 @@ public class Neuron {
 	protected List<Connection> incomingConnectionsToThisNeuron;
 	protected List<Connection> outgoingConnectionsFromThisneuron;
 	protected double neuronValue;
+	protected double errorAssociatedWithNeuronValue;
 
 	public Neuron(ActivationFunction activationFunction, double neuronValue) {
 		this.activationFunction = activationFunction;
@@ -19,8 +20,13 @@ public class Neuron {
 		outgoingConnectionsFromThisneuron = new ArrayList<>();
 	}
 
-	public double activate(double ValueToOperateOn) {
-		return activationFunction.operate(ValueToOperateOn);
+	public void findAndSetError(double targetValue, double neuronValue) {
+		double activatedValue = activationFunction.findError(targetValue, neuronValue);
+		errorAssociatedWithNeuronValue = activatedValue;
+	}
+
+	public void activate(double valueToActivate) {
+		neuronValue = activationFunction.activate(valueToActivate);
 	}
 
 	public void addIncomingConnectionToThisNeuron(Connection c) {
@@ -35,8 +41,16 @@ public class Neuron {
 		return incomingConnectionsToThisNeuron;
 	}
 
-	public List<Connection> getOutgoingConnectionsFromThisneuron() {
+	public List<Connection> getOutgoingConnectionsFromThisNeuron() {
 		return outgoingConnectionsFromThisneuron;
+	}
+
+	public List<Neuron> getOutgoingNeurons() {
+		List<Neuron> retVal = new ArrayList<>();
+		for (Connection c : outgoingConnectionsFromThisneuron) {
+			retVal.add(c.getToNeuron());
+		}
+		return retVal;
 	}
 
 	public List<Neuron> getIncomingNeurons() {
@@ -53,6 +67,14 @@ public class Neuron {
 
 	public void setNodeValue(double nodeValue) {
 		this.neuronValue = nodeValue;
+	}
+
+	public double getErrorAssociatedWithNeuronValue() {
+		return errorAssociatedWithNeuronValue;
+	}
+
+	public void setErrorAssociatedWithNeuronValue(double errorAssociatedWithNeuronValue) {
+		this.errorAssociatedWithNeuronValue = errorAssociatedWithNeuronValue;
 	}
 
 	public String toString() {

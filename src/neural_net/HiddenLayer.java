@@ -2,10 +2,12 @@ package neural_net;
 
 import java.util.List;
 
+import solver.ActivationFunction;
+
 public class HiddenLayer extends Layer {
 
-	public HiddenLayer(int numNeurons, int numOutgoingConnectionsPerNeuron) {
-		super(numNeurons, numOutgoingConnectionsPerNeuron);
+	public HiddenLayer(int numNeurons) {
+		super(numNeurons);
 		layerType = "HIDDEN";
 	}
 
@@ -17,11 +19,11 @@ public class HiddenLayer extends Layer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new Neuron((ActivationFunction) NeuralNetworkType.activationFunction, initialNodeValue));
+			neurons.add(new Neuron(NeuralNetworkModel.activationFunction, initialNodeValue));
 		}
 		for (int i = 0; i < neurons.size(); i++) {
 
-			int numRemainingOutgoingConnectionsPerNeuron = numOutgoingConnectionsPerNeuron;
+			int numRemainingOutgoingConnectionsPerNeuron = downStreamNeurons.size();
 			int numRemainingDownStreamNeurons = downStreamNeurons.size() - 1;
 
 			while (numRemainingOutgoingConnectionsPerNeuron >= 0 && numRemainingDownStreamNeurons >= 0) {

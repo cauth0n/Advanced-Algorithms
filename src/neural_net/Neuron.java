@@ -3,6 +3,8 @@ package neural_net;
 import java.util.ArrayList;
 import java.util.List;
 
+import solver.ActivationFunction;
+
 public class Neuron {
 
 	protected ActivationFunction activationFunction;

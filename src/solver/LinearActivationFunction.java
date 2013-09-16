@@ -1,4 +1,4 @@
-package neural_net;
+package solver;
 
 public class LinearActivationFunction extends ActivationFunction {
 

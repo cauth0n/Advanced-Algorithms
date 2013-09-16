@@ -5,11 +5,12 @@ import java.util.List;
 
 public class InputLayer extends Layer {
 
-	private List<Connection> inputConnections; // unique, for input layer.
+	private List<Connection> inputConnections; // unique, for input
+												// layer.
 	private List<Double> inputVector;
 
-	public InputLayer(int numInputNeurons, int numOutgoingConnectionsPerInputNeuron, List<Double> inputVector) {
-		super(numInputNeurons, numOutgoingConnectionsPerInputNeuron);
+	public InputLayer(int numInputNeurons, List<Double> inputVector) {
+		super(numInputNeurons);
 		this.inputVector = inputVector;
 		layerType = "INPUT";
 	}
@@ -18,11 +19,12 @@ public class InputLayer extends Layer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		inputConnections = new ArrayList<>();
 		for (int i = 0; i < numNeurons; i++) {
-			Neuron n = new Neuron(NeuralNetworkType.activationFunction, inputVector.get(i));
+			Neuron n = new Neuron(NeuralNetworkModel.activationFunction, inputVector.get(i));
 			Connection c = new Connection(null, n, initialWeight);
 			/*
-			 * the initial weight bit here may need to change. I may need to
-			 * input a vector of manually chosen input weights.
+			 * the initial weight bit here may need to change. I may
+			 * need to input a vector of manually chosen input
+			 * weights.
 			 */
 			n.addIncomingConnectionToThisNeuron(c);
 
@@ -31,7 +33,7 @@ public class InputLayer extends Layer {
 		}
 
 		for (int i = 0; i < neurons.size(); i++) {
-			int numRemainingOutgoingConnectionsPerNeuron = numOutgoingConnectionsPerNeuron;
+			int numRemainingOutgoingConnectionsPerNeuron = downStreamNeurons.size();
 			int numRemainingDownStreamNeurons = downStreamNeurons.size() - 1;
 
 			while (numRemainingOutgoingConnectionsPerNeuron >= 0 && numRemainingDownStreamNeurons >= 0) {
@@ -50,6 +52,5 @@ public class InputLayer extends Layer {
 			}
 		}
 	}
-
 
 }

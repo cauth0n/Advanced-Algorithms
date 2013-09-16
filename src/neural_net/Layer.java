@@ -5,7 +5,8 @@ import java.util.List;
 
 public abstract class Layer {
 
-	// all connections weights initialized to 1. Arbitrary, and it will change
+	// all connections weights initialized to 1. Arbitrary, and it
+	// will change
 	// as the algorithm performs.
 	protected final double initialWeight = 1;
 	protected final double initialNodeValue = 0;
@@ -13,16 +14,14 @@ public abstract class Layer {
 	protected List<Neuron> neurons;
 	protected List<Connection> connections;
 
-	protected int numOutgoingConnectionsPerNeuron;
 	protected int numNeurons;
 
 	protected String layerType;
 
-	public Layer(int numNeurons, int numOutgoingConnectionsPerNeuron) {
+	public Layer(int numNeurons) {
 		this.numNeurons = numNeurons;
-		this.numOutgoingConnectionsPerNeuron = numOutgoingConnectionsPerNeuron;
 		neurons = new ArrayList<>(numNeurons);
-		connections = new ArrayList<>(numNeurons * numOutgoingConnectionsPerNeuron);
+		connections = new ArrayList<>();
 	}
 
 	public abstract void buildLayer(List<Neuron> downStreamNeurons);
@@ -60,12 +59,11 @@ public abstract class Layer {
 		return weightVector;
 	}
 
-
-
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(layerType + ": " + " total neurons: " + neurons.size() + "; connections per neuron: " + (connections.size() / neurons.size()));
+		stringBuilder.append(layerType + ": " + " total neurons: " + neurons.size() + "; connections per neuron: "
+				+ (connections.size() / neurons.size()));
 
 		stringBuilder.append("\n<");
 		for (Neuron n : neurons) {

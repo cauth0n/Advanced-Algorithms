@@ -8,16 +8,17 @@ import neural_net.NeuralNetworkStructure;
 public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgorithmStrategy {
 
 	protected NeuralNetworkStructure neuralNetStructure;
+	protected double alpha;
+	protected double eta;
 
-	public FeedForwardNeuralNetworkStrategy(NeuralNetworkStructure neuralNetStructure) {
+	public FeedForwardNeuralNetworkStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
 		this.neuralNetStructure = neuralNetStructure;
+		this.alpha = alpha;
+		this.eta = eta;
 	}
 
 	public abstract void feedForward();
 
-	public void solvingChain(double targetOutput) {
-		feedForward();
-		solve(targetOutput);
-	}
+	public abstract void backPropagateError();
 
 }

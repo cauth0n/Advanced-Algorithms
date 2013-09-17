@@ -2,14 +2,16 @@ package solver;
 
 public class LinearActivationFunction extends ActivationFunction {
 
-	@Override
-	public double findError(double targetValue, double neuronValue) {
-		return targetValue - neuronValue;
-	}
 
 	@Override
 	public double activate(double valueToActivate) {
 		return valueToActivate;
+	}
+
+	@Override
+	public double activationDerivative(double valueToActivate) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

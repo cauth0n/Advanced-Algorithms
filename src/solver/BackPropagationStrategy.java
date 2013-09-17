@@ -12,45 +12,90 @@ import neural_net.Neuron;
  */
 public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 
-	public BackPropagationStrategy(NeuralNetworkStructure neuralNetStructure) {
-		super(neuralNetStructure);
+	private double targetOutput;
+
+	public BackPropagationStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
+		super(neuralNetStructure, alpha, eta);
 	}
 
 	public void mainLoop(int numIterations, double targetOutput) {
+		this.targetOutput = targetOutput;
 		for (int i = 0; i < numIterations; i++) {
-			feedForward();
-			solve(targetOutput);
-			System.out.println(neuralNetStructure.toString());
-			Scanner in = new Scanner(System.in);
+			//pause();
 
-			System.out.println("Press enter to continue");
-			String go = in.next();
+			feedForward();
+			backPropagateError();
+			backPropagateWeightErrors();
+			updateWeights();
+		}
+		System.out.println(neuralNetStructure.toString());
+	}
+
+	public void pause() {
+		System.out.println(neuralNetStructure.toString());
+		Scanner in = new Scanner(System.in);
+		System.out.println("Press enter to continue");
+		String go = in.next();
+	}
+
+	public void updateWeights() {
+		for (Layer l : neuralNetStructure.getLayers()) {
+			for (Connection c : l.getConnectionVector()) {
+				c.appendWeight(c.getDeltaWeight() + alpha * c.getMomentumDeltaWeight());
+				c.updateTimeStep();
+			}
+		}
+	}
+
+	public void backPropagateWeightErrors() {
+		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
+			Layer l = neuralNetStructure.getLayers().get(i);
+			backPropagateWeights(l);
+		}
+	}
+
+	public void backPropagateWeights(Layer l) {
+		for (Neuron n : l.getNeuronVector()) {
+			for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
+				c.setDeltaWeight(-1 * eta * c.getFromNeuron().getNeuronValue() * n.getNeuronError());
+			}
 		}
 	}
 
 	@Override
-	public void solve(double targetOutput) {
-		for (Layer l : neuralNetStructure.getLayers()) {
+	public void backPropagateError() {
+		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
+			// skipping input layer
+			Layer l = neuralNetStructure.getLayers().get(i);
 			switch (l.getLayerType()) {
 			case "OUTPUT":
 				for (Neuron n : l.getNeuronVector()) {
-					n.findAndSetError(targetOutput, n.getNeuronValue());
+					n.setNeuronError(getCalculatedOutputErrorSignals(n));
 				}
 				break;
 			case "HIDDEN":
-				for (Neuron n : l.getNeuronVector()) {
-					double value = 0.0;
-					for (int i = 0; i < n.getOutgoingNeurons().size(); i++) {
-						value += n.getOutgoingNeurons().get(i).getErrorAssociatedWithNeuronValue() * n.getOutgoingConnectionsFromThisNeuron().get(i).getWeight();
-					}
-					n.setErrorAssociatedWithNeuronValue(value * (n.getNeuronValue() * (1 - n.getNeuronValue())));
-				}
-
+				calculateHiddenErrorSignals(l);
 				break;
-			case "INPUT":
 			default:
 				break;
 			}
+		}
+	}
+
+	public double getCalculatedOutputErrorSignals(Neuron n) {
+		double delta = -1 * (targetOutput - n.getNeuronValue()) * n.getActivationDerivative();
+		return delta;
+	}
+
+	public void calculateHiddenErrorSignals(Layer l) {
+		double runningSum;
+		for (Neuron n : l.getNeuronVector()) {
+			runningSum = 0.0;
+			for (Connection outConn : n.getOutgoingConnectionsFromThisNeuron()) {
+				runningSum += outConn.getWeight() * outConn.getToNeuron().getNeuronError();
+			}
+			runningSum *= n.getActivationDerivative();
+			n.setNeuronError(runningSum);
 		}
 	}
 
@@ -58,18 +103,18 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 	public void feedForward() {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			switch (l.getLayerType()) {
-			case "INPUT":// do nothing
-				break;
+
 			case "HIDDEN":
 			case "OUTPUT":
 				for (Neuron n : l.getNeuronVector()) {
-					double newNeuronValue = 0;
-					for (Connection prevConnection : n.getIncomingConnectionsToThisNeuron()) {
-						newNeuronValue += prevConnection.getFromNeuron().getNeuronValue() * prevConnection.getWeight();
-						// w*j part
+					double newNeuronValue = 0.0;
+					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
+						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
 					}
 					n.activate(newNeuronValue);
 				}
+				break;
+			default:
 				break;
 			}
 		}

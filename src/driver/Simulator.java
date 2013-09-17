@@ -20,12 +20,12 @@ public class Simulator {
 	private List<Double> inputVector;
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
-	private int numHiddenLayers = 1;
+	private int numHiddenLayers = 2;
 	private int numNeuronsPerHiddenLayer = 4;
 	private double targetOutput = 100.0;
 	private int numIterations = 4000;
 	private double eta = .00001;
-	private double alpha = 0;
+	private double alpha = .5;
 
 	public Simulator() {
 		findRosenbrockInputVector();

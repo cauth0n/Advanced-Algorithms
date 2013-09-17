@@ -21,7 +21,7 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 	public void mainLoop(int numIterations, double targetOutput) {
 		this.targetOutput = targetOutput;
 		for (int i = 0; i < numIterations; i++) {
-			//pause();
+			// pause();
 
 			feedForward();
 			backPropagateError();
@@ -83,7 +83,7 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 	}
 
 	public double getCalculatedOutputErrorSignals(Neuron n) {
-		double delta = -1 * (targetOutput - n.getNeuronValue()) * n.getActivationDerivative();
+		double delta = -1 * ((targetOutput - n.getNeuronValue()) * n.getActivationDerivative());
 		return delta;
 	}
 

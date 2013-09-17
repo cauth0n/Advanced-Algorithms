@@ -2,13 +2,10 @@ package neural_net;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Layer {
 
-	// all connections weights initialized to 1. Arbitrary, and it
-	// will change
-	// as the algorithm performs.
-	protected final double initialWeight = 1;
 	protected final double initialNodeValue = 0;
 
 	protected List<Neuron> neurons;
@@ -57,6 +54,11 @@ public abstract class Layer {
 			weightVector.add(connections.get(i).getWeight());
 		}
 		return weightVector;
+	}
+
+	public double getRandomWeight() {
+		Random rand = new Random();
+		return rand.nextDouble();
 	}
 
 	@Override

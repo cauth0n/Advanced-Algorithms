@@ -14,25 +14,40 @@ public abstract class NeuralNetworkModel implements MachineLearningModel {
 	protected int numInputNeurons;
 	protected List<Double> inputVector;
 	protected int numOutputNeurons;
-	protected int numHiddenLayers;
-	protected int numNeuronsPerHiddenLayer;
 
-	public NeuralNetworkModel(ActivationFunction activationFunction, int numInputNeurons, List<Double> inputVector, int numOutputNeurons,
-			int numHiddenLayers, int numNeuronsPerHiddenLayer) {
+	public NeuralNetworkModel(ActivationFunction activationFunction, int numInputNeurons, List<Double> inputVector, int numOutputNeurons) {
 		NeuralNetworkModel.activationFunction = activationFunction;
+		
 		this.numInputNeurons = numInputNeurons;
 		this.inputVector = inputVector;
 		this.numOutputNeurons = numOutputNeurons;
-		this.numHiddenLayers = numHiddenLayers;
-		this.numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer;
+
 	}
 
-	public abstract String toString();
+	public String toString() {
+		return neuralNetworkStructure.toString();
+	}
 
 	public MachineLearningModelStructure getModelStructure() {
 		return neuralNetworkStructure;
 	}
 
-	public abstract void constructInputOutputLayers();
+	public void stitchLayersTogether() {
+		for (int i = neuralNetworkStructure.getLayers().size() - 1; i >= 0; i--) {
+			if (i == neuralNetworkStructure.getLayers().size() - 1) {// output,
+																		// downStreamNeurons
+				// are null.
+				neuralNetworkStructure.getLayers().get(i).buildLayer(null);
+			} else { // evertyhing else.
+				neuralNetworkStructure.getLayers().get(i).buildLayer(neuralNetworkStructure.getLayers().get(i + 1).getNeuronVector());
+			}
+		}
+	}
+
+	public void constructInputOutputLayers() {
+		neuralNetworkStructure.addInputLayer(); // layer 0
+		neuralNetworkStructure.addOutputLayer(); // layer 1
+
+	}
 
 }

@@ -2,8 +2,6 @@ package neural_net;
 
 import java.util.List;
 
-import solver.ActivationFunction;
-
 public class OutputLayer extends Layer {
 
 	/***
@@ -27,7 +25,7 @@ public class OutputLayer extends Layer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
 			neurons.add(new Neuron(NeuralNetworkModel.activationFunction, initialNodeValue));
-			connections.add(new Connection(neurons.get(i), null, initialWeight));
+			connections.add(new Connection(neurons.get(i), null, getRandomWeight()));
 		}
 
 	}

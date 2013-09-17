@@ -6,6 +6,7 @@ import java.util.List;
 import neural_net.NeuralNetworkModel;
 import neural_net.NonRecurrentNeuralNetwork;
 import solver.ActivationFunction;
+import solver.LinearActivationFunction;
 import solver.SigmoidActivationFunction;
 import solver.Solver;
 import validation.KFoldCrossValidation;
@@ -29,8 +30,22 @@ public class Simulator {
 
 	public Simulator() {
 		findRosenbrockInputVector();
-		linearActivation();
 
+
+		//buildBackPropModel();
+
+		buildRBFModel();
+
+	}
+
+	public void buildRBFModel() {
+		
+		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, 1, numNeuronsPerHiddenLayer);
+		neuralNet.buildModelStructure();
+	}
+
+	public void buildBackPropModel() {
+		sigmoidalActivation();
 		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers,
 				numNeuronsPerHiddenLayer);
 
@@ -44,6 +59,10 @@ public class Simulator {
 	}
 
 	public void linearActivation() {
+		activationFunction = new LinearActivationFunction();
+	}
+
+	public void sigmoidalActivation() {
 		activationFunction = new SigmoidActivationFunction();
 	}
 

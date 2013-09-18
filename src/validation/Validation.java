@@ -1,22 +1,22 @@
 package validation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public abstract class Validation {
 
-	protected List<DataPoint> dataPoints;
+	protected Collection<DataPoint> dataPoints;
+	protected int numDataPoints;
 	protected DataPointGenerator dataPointGenerator;
-	protected List<DataPoint> trainingDataSet;
-	protected List<DataPoint> testDataSet;
+	protected Collection<DataPoint> trainingDataSet;
+	protected Collection<DataPoint> testDataSet;
 
-	public Validation() {
-
-		dataPoints = new ArrayList<>();
-		trainingDataSet = new ArrayList<>();
-		testDataSet = new ArrayList<>();
+	public Validation(int numDataPoints, DataPointGenerator dataPointGenerator) {
+		this.numDataPoints = numDataPoints;
+		this.dataPointGenerator = dataPointGenerator;
 	}
 
-	public abstract void generatorDataPoints();
+	public abstract void assignPoolOfDataPoints();
+
+	public abstract void constructCrossValidationMethod();
 
 }

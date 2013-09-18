@@ -25,29 +25,27 @@ public class Simulator {
 	private int numNeuronsPerHiddenLayer = 4;
 	private double targetOutput = 100.0;
 	private int numIterations = 4000;
-	private double eta = .00001;
+	private double eta = .0001;
 	private double alpha = .5;
 
 	public Simulator() {
 		findRosenbrockInputVector();
 
-
-		//buildBackPropModel();
+		buildBackPropModel();
 
 		buildRBFModel();
 
 	}
 
 	public void buildRBFModel() {
-		
+
 		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, 1, numNeuronsPerHiddenLayer);
 		neuralNet.buildModelStructure();
 	}
 
 	public void buildBackPropModel() {
 		sigmoidalActivation();
-		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers,
-				numNeuronsPerHiddenLayer);
+		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers, numNeuronsPerHiddenLayer);
 
 		neuralNet.buildModelStructure();
 

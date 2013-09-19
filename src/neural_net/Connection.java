@@ -5,6 +5,7 @@ public class Connection {
 	private Neuron toNeuron;
 	private Neuron fromNeuron;
 	private double weight;
+	private double error;
 	private double deltaWeight;
 	private double momentumDeltaWeight;
 
@@ -14,6 +15,15 @@ public class Connection {
 		this.weight = weight;
 		deltaWeight = 0;
 		momentumDeltaWeight = 0;
+		error = 0;
+	}
+
+	public double getError() {
+		return error;
+	}
+
+	public void setError(double error) {
+		this.error = error;
 	}
 
 	public void appendWeight(double weightToAppend) {

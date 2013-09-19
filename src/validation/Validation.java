@@ -1,14 +1,14 @@
 package validation;
 
-import java.util.Collection;
+import java.util.List;
 
 public abstract class Validation {
 
-	protected Collection<DataPoint> dataPoints;
+	protected List<DataPoint> dataPoints;
 	protected int numDataPoints;
 	protected DataPointGenerator dataPointGenerator;
-	protected Collection<DataPoint> trainingDataSet;
-	protected Collection<DataPoint> testDataSet;
+	protected List<DataPoint> trainingDataSet;
+	protected List<DataPoint> testDataSet;
 
 	public Validation(int numDataPoints, DataPointGenerator dataPointGenerator) {
 		this.numDataPoints = numDataPoints;
@@ -18,5 +18,9 @@ public abstract class Validation {
 	public abstract void assignPoolOfDataPoints();
 
 	public abstract void constructCrossValidationMethod();
+
+	public abstract List<DataPoint> getTrainingSet();
+
+	public abstract List<DataPoint> getTestSet();
 
 }

@@ -34,7 +34,7 @@ public abstract class NeuralNetworkModel implements MachineLearningModel {
 
 	public void stitchLayersTogether() {
 		for (int i = neuralNetworkStructure.getLayers().size() - 1; i >= 0; i--) {
-			if (i == neuralNetworkStructure.getLayers().size() - 1) {// output,
+			if (i == neuralNetworkStructure.getLayers().size() - 1) {// output,`
 																		// downStreamNeurons
 				// are null.
 				neuralNetworkStructure.getLayers().get(i).buildLayer(null);

@@ -1,5 +1,7 @@
 package solver;
 
+import java.util.List;
+
 import neural_net.NeuralNetworkStructure;
 
 /**
@@ -17,7 +19,7 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 		this.eta = eta;
 	}
 
-	public abstract void feedForward();
+	public abstract void feedForward(List<Double> inputValues);
 
 	public abstract void backPropagateError();
 

@@ -11,13 +11,10 @@ public class Neuron {
 	protected List<Connection> incomingConnectionsToThisNeuron;
 	protected List<Connection> outgoingConnectionsFromThisneuron;
 	protected double neuronValue;
-	protected double neuronError;
 
 	public Neuron(ActivationFunction activationFunction, double neuronValue) {
 		this.activationFunction = activationFunction;
 		this.neuronValue = neuronValue;
-		this.neuronError = 0;// initializing error to zero... may be
-								// stupid.
 		incomingConnectionsToThisNeuron = new ArrayList<>();
 		outgoingConnectionsFromThisneuron = new ArrayList<>();
 	}
@@ -66,16 +63,8 @@ public class Neuron {
 		return neuronValue;
 	}
 
-	public void setNodeValue(double nodeValue) {
-		this.neuronValue = nodeValue;
-	}
-
-	public double getNeuronError() {
-		return neuronError;
-	}
-
-	public void setNeuronError(double setNeuronError) {
-		this.neuronError = setNeuronError;
+	public void setNeuronValue(double neuronValue) {
+		this.neuronValue = neuronValue;
 	}
 
 	public String toString() {

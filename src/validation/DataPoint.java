@@ -20,4 +20,13 @@ public abstract class DataPoint {
 		return inputValues;
 	}
 
+	public String toString() {
+		String toRet = "Input vector: {";
+		for (Double d : inputValues) {
+			toRet += d + ", ";
+		}
+		toRet += "} Target: " + targetOutput;
+		return toRet;
+	}
+
 }

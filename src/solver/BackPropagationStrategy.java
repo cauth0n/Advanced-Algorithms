@@ -1,33 +1,41 @@
 package solver;
 
+import java.util.List;
 import java.util.Scanner;
 
 import neural_net.Connection;
 import neural_net.Layer;
 import neural_net.NeuralNetworkStructure;
 import neural_net.Neuron;
+import validation.DataPoint;
 
 /**
  * @author cauthon
  */
 public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
-
 	private double targetOutput;
 
 	public BackPropagationStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
 		super(neuralNetStructure, alpha, eta);
 	}
 
-	public void mainLoop(int numIterations, double targetOutput) {
-		this.targetOutput = targetOutput;
-		for (int i = 0; i < numIterations; i++) {
-			// pause();
+	public void mainLoop(DataPoint d, StoppingCondition stoppingCondition) {
+		targetOutput = d.getTargetOutput();
 
-			feedForward();
+		while (!stoppingCondition.isDone()) {
+			print();
+			//pause();
+			feedForward(d.getInputValues());
 			backPropagateError();
 			backPropagateWeightErrors();
 			updateWeights();
+
+			stoppingCondition.postRoundOperation();
 		}
+		System.out.println(neuralNetStructure.toString());
+	}
+	
+	public void print(){
 		System.out.println(neuralNetStructure.toString());
 	}
 
@@ -49,29 +57,23 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 
 	public void backPropagateWeightErrors() {
 		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
-			Layer l = neuralNetStructure.getLayers().get(i);
-			backPropagateWeights(l);
-		}
-	}
-
-	public void backPropagateWeights(Layer l) {
-		for (Neuron n : l.getNeuronVector()) {
-			for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
-				c.setDeltaWeight(-1 * eta * c.getFromNeuron().getNeuronValue() * n.getNeuronError());
+			for (Connection c : neuralNetStructure.getLayers().get(i).getConnectionVector()) {
+				double value = (-1 * eta * c.getError() * c.getFromNeuron().getNeuronValue());
+				c.setDeltaWeight(value);
+				// this c.getFromNeuron.getNeuronValue might need to change:
+				//change to something like c.getFromNeuron.getPreviousNeuron.getValue...
 			}
 		}
 	}
 
 	@Override
 	public void backPropagateError() {
-		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
+		for (int i = neuralNetStructure.getLayers().size() - 1; i >= 0; i--) {
 			// skipping input layer
 			Layer l = neuralNetStructure.getLayers().get(i);
 			switch (l.getLayerType()) {
 			case "OUTPUT":
-				for (Neuron n : l.getNeuronVector()) {
-					n.setNeuronError(getCalculatedOutputErrorSignals(n));
-				}
+				calculateOutputErrorSignals(l);
 				break;
 			case "HIDDEN":
 				calculateHiddenErrorSignals(l);
@@ -82,25 +84,29 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
-	public double getCalculatedOutputErrorSignals(Neuron n) {
-		double delta = -1 * ((targetOutput - n.getNeuronValue()) * n.getActivationDerivative());
-		return delta;
+	public void calculateOutputErrorSignals(Layer l) {
+		for (Neuron n : l.getNeuronVector()) {
+			for (Connection c : n.getOutgoingConnectionsFromThisNeuron()) {
+				double delta = -1 * ((targetOutput - c.getWeight()) * n.getActivationDerivative());
+				c.setError(delta);
+			}
+		}
 	}
 
 	public void calculateHiddenErrorSignals(Layer l) {
 		double runningSum;
-		for (Neuron n : l.getNeuronVector()) {
+		for (Connection c : l.getConnectionVector()) {
 			runningSum = 0.0;
-			for (Connection outConn : n.getOutgoingConnectionsFromThisNeuron()) {
-				runningSum += outConn.getWeight() * outConn.getToNeuron().getNeuronError();
+			for (Connection cNext : c.getToNeuron().getOutgoingConnectionsFromThisNeuron()) {
+				runningSum += cNext.getError() * cNext.getWeight();
 			}
-			runningSum *= n.getActivationDerivative();
-			n.setNeuronError(runningSum);
+			runningSum *= c.getToNeuron().getActivationDerivative();
+			c.setError(runningSum);
 		}
 	}
 
 	@Override
-	public void feedForward() {
+	public void feedForward(List<Double> inputValues) {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			switch (l.getLayerType()) {
 
@@ -112,6 +118,11 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
 					}
 					n.activate(newNeuronValue);
+				}
+				break;
+			case "INPUT":
+				for (int i = 0; i < l.getNeuronVector().size(); i++) {
+					l.getNeuronVector().get(i).setNeuronValue(inputValues.get(i));
 				}
 				break;
 			default:

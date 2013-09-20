@@ -6,7 +6,7 @@ import java.util.List;
 import neural_net.NeuralNetworkModel;
 import neural_net.NonRecurrentNeuralNetwork;
 import solver.ActivationFunction;
-import solver.IterativeStoppingCondition;
+import solver.ConvergenceStoppingCondition;
 import solver.LinearActivationFunction;
 import solver.SigmoidActivationFunction;
 import solver.Solver;
@@ -28,15 +28,15 @@ public class Simulator {
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 2;
 	private int numNeuronsPerHiddenLayer = 4;
-	private double targetOutput = 100.0;
-	private int numIterations = 40000;
+	private int numIterations = 10;
 	private double eta = .01;
 	private double alpha = .5;
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private int randDataPointRange = 2;
-	private int numDataPoints = 1;
-	private int k = 5;
+	private int numDataPoints = 10;
+	private int k = 10;
+	private double stoppingEpsilon = 0.0001;
 
 	public Simulator() {
 		getInitialInputVector();
@@ -44,7 +44,6 @@ public class Simulator {
 
 		buildBackPropModel();
 
-		
 		// buildRBFModel();
 
 	}
@@ -53,7 +52,8 @@ public class Simulator {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
 		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
 		validation.assignPoolOfDataPoints();
-		stoppingCondition = new IterativeStoppingCondition(numIterations);
+		stoppingCondition = new ConvergenceStoppingCondition(stoppingEpsilon);
+		// stoppingCondition = new IterativeStoppingCondition(numIterations);
 	}
 
 	public DataPointGenerator getRosenbrockDataPointGenerator() {

@@ -7,6 +7,8 @@ import validation.DataPoint;
  */
 public interface MachineLearningAlgorithmStrategy {
 
-	public abstract void mainLoop(DataPoint d, StoppingCondition stoppingCondition);
+	public void mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition);
+
+	public double mainTestLoop(DataPoint d);
 
 }

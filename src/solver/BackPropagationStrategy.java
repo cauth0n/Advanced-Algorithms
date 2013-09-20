@@ -19,23 +19,33 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		super(neuralNetStructure, alpha, eta);
 	}
 
-	public void mainLoop(DataPoint d, StoppingCondition stoppingCondition) {
-		targetOutput = d.getTargetOutput();
+	public double mainTestLoop(DataPoint d) {
+		feedForward(d.getInputValues());
+		return getNNOutput();
+	}
 
+	public void mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
+		stoppingCondition.reset();
+		targetOutput = d.getTargetOutput();
+		stoppingCondition.setTarget(targetOutput);
+		int counter = 0;
 		while (!stoppingCondition.isDone()) {
-			print();
-			//pause();
+			// print();
+			// pause();
 			feedForward(d.getInputValues());
 			backPropagateError();
 			backPropagateWeightErrors();
 			updateWeights();
 
-			stoppingCondition.postRoundOperation();
+			stoppingCondition.postRoundOperation(getNNOutput());
+			counter++;
 		}
+
 		System.out.println(neuralNetStructure.toString());
+		System.out.println(counter + " Iterations");
 	}
-	
-	public void print(){
+
+	public void print() {
 		System.out.println(neuralNetStructure.toString());
 	}
 
@@ -44,6 +54,10 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Press enter to continue");
 		String go = in.next();
+	}
+
+	public double getNNOutput() {
+		return neuralNetStructure.getLayers().get(neuralNetStructure.getLayers().size() - 1).getConnectionVector().get(0).getWeight();
 	}
 
 	public void updateWeights() {
@@ -61,7 +75,8 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 				double value = (-1 * eta * c.getError() * c.getFromNeuron().getNeuronValue());
 				c.setDeltaWeight(value);
 				// this c.getFromNeuron.getNeuronValue might need to change:
-				//change to something like c.getFromNeuron.getPreviousNeuron.getValue...
+				// change to something like
+				// c.getFromNeuron.getPreviousNeuron.getValue...
 			}
 		}
 	}

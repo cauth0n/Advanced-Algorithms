@@ -20,8 +20,20 @@ public class IterativeStoppingCondition extends StoppingCondition {
 	}
 
 	@Override
-	public void postRoundOperation() {
+	public void postRoundOperation(double d) {
 		numIterationsSoFar++;
+	}
+
+	@Override
+	public void setTarget(double newTarget) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void reset() {
+		numIterationsSoFar = 0;
+
 	}
 
 }

@@ -38,14 +38,15 @@ public class Solver {
 		validation.constructCrossValidationMethod();
 
 		for (DataPoint d : validation.getTrainingSet()) {
-			solveStrategy.mainLoop(d, stoppingCondition);
+			solveStrategy.mainTrainingLoop(d, stoppingCondition);
 			System.out.println(d.toString());
 		}
 	}
 
 	public void test() {
 		for (DataPoint d : validation.getTestSet()) {
-
+			double output = solveStrategy.mainTestLoop(d);
+			System.out.println("Target: " + d.getTargetOutput() + " Neural net output: " + output + " Difference: " + (d.getTargetOutput() - output));
 		}
 	}
 

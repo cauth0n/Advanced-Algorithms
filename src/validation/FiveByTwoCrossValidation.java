@@ -16,12 +16,6 @@ public class FiveByTwoCrossValidation extends Validation {
 	}
 
 	@Override
-	public void constructCrossValidationMethod() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List<DataPoint> getTrainingSet() {
 		// TODO Auto-generated method stub
 		return null;
@@ -31,6 +25,12 @@ public class FiveByTwoCrossValidation extends Validation {
 	public List<DataPoint> getTestSet() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void contructCrossValidationMethod() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

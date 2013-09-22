@@ -11,15 +11,10 @@ public class KFoldCrossValidation extends Validation {
 	private int k;
 	private int testSetPointer;
 	private Map<Integer, List<DataPoint>> dataPointDivision;
-	private List<DataPoint> duplicateDataPoints;
 
 	public KFoldCrossValidation(int numDataPoints, DataPointGenerator dataPointGenerator, int k) {
 		super(numDataPoints, dataPointGenerator);
 		this.k = k;
-		dataPoints = new ArrayList<>();
-		duplicateDataPoints = new ArrayList<>();
-		testDataSet = new ArrayList<>();
-		trainingDataSet = new ArrayList<>();
 		dataPointDivision = new HashMap<Integer, List<DataPoint>>();
 		testSetPointer = getTestSetPointer();
 	}
@@ -30,20 +25,36 @@ public class KFoldCrossValidation extends Validation {
 	}
 
 	@Override
+	public void contructCrossValidationMethod() {
+		for (int i = 0; i < k; i++) {
+			dataPointDivision.put(i, new ArrayList<DataPoint>());
+		}
+		assignPoolOfDataPoints();
+	}
+
+	@Override
 	public void assignPoolOfDataPoints() {
-		for (int i = 0; i < numDataPoints; i++) {
+		int sizeOfMapValues = numDataPoints / k;
+
+		Random rand = new Random();
+		int i = 0;
+		while (i < numDataPoints) {
 			DataPoint d = dataPointGenerator.getNewDataPoint();
-			dataPoints.add(d);
-			duplicateDataPoints.add(d);
+			int spot = rand.nextInt(k);
+
+			List<DataPoint> currentDataList = dataPointDivision.get(spot);
+
+			if (currentDataList.size() < sizeOfMapValues) {
+				currentDataList.add(d);
+				i++;
+			}
 		}
 	}
 
 	public List<DataPoint> getTrainingSet() {
 		List<DataPoint> toRet = new ArrayList<>();
 		for (int i = 0; i < k; i++) {
-			if (i == testSetPointer) {
-				continue;
-			} else {
+			if (i != testSetPointer) {
 				for (DataPoint d : dataPointDivision.get(i)) {
 					toRet.add(d);
 				}
@@ -59,25 +70,4 @@ public class KFoldCrossValidation extends Validation {
 		return toRet;
 	}
 
-	@Override
-	public void constructCrossValidationMethod() {
-		for (int i = 0; i < k; i++) {
-			dataPointDivision.put(i, getRandomizedList());
-		}
-	}
-
-	private List<DataPoint> getRandomizedList() {
-		List<DataPoint> toRet = new ArrayList<>();
-		Random rand = new Random();
-		int duplicateSize = duplicateDataPoints.size() - 1;
-
-		while (duplicateSize >= 0) {
-			DataPoint p = duplicateDataPoints.get(rand.nextInt(duplicateDataPoints.size()));
-			toRet.add(p);
-			duplicateDataPoints.remove(p);
-			duplicateSize--;
-		}
-
-		return toRet;
-	}
 }

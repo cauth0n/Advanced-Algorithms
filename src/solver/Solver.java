@@ -29,17 +29,19 @@ public class Solver {
 		solveStrategy = new BackPropagationStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
 		// this cast is not pretty, but I don't know what else to do.
 
+		validation.contructCrossValidationMethod();
+
 		train();
 		test();
 
 	}
 
 	public void train() {
-		validation.constructCrossValidationMethod();
 
 		for (DataPoint d : validation.getTrainingSet()) {
-			solveStrategy.mainTrainingLoop(d, stoppingCondition);
 			System.out.println(d.toString());
+			solveStrategy.mainTrainingLoop(d, stoppingCondition);
+
 		}
 	}
 

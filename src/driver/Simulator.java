@@ -11,6 +11,7 @@ import solver.LinearActivationFunction;
 import solver.SigmoidActivationFunction;
 import solver.Solver;
 import solver.StoppingCondition;
+import validation.DataPoint;
 import validation.DataPointGenerator;
 import validation.KFoldCrossValidation;
 import validation.RosenbrockDataPointGenerator;
@@ -30,7 +31,7 @@ public class Simulator {
 	private int numNeuronsPerHiddenLayer = 4;
 	private int numIterations = 10;
 	private double eta = .01;
-	private double alpha = .5;
+	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private int randDataPointRange = 2;
@@ -41,7 +42,6 @@ public class Simulator {
 	public Simulator() {
 		getInitialInputVector();
 		buildKFoldCrossValidation();
-
 		buildBackPropModel();
 
 		// buildRBFModel();
@@ -51,7 +51,6 @@ public class Simulator {
 	public void buildKFoldCrossValidation() {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
 		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
-		validation.assignPoolOfDataPoints();
 		stoppingCondition = new ConvergenceStoppingCondition(stoppingEpsilon);
 		// stoppingCondition = new IterativeStoppingCondition(numIterations);
 	}

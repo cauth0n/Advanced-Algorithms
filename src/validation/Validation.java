@@ -17,7 +17,7 @@ public abstract class Validation {
 
 	public abstract void assignPoolOfDataPoints();
 
-	public abstract void constructCrossValidationMethod();
+	public abstract void contructCrossValidationMethod();
 
 	public abstract List<DataPoint> getTrainingSet();
 

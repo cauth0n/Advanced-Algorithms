@@ -1,13 +1,23 @@
 package solver;
+
 /**
- *@author cauthon
+ * @author cauthon
  */
 public class GaussianBasis extends ActivationFunction {
 
+	private double center;
+	private double width;
+	private double peak;
+
+	public GaussianBasis(double peak, double center, double width) {
+		this.center = center;
+		this.width = width;
+		this.peak = peak;
+	}
+
 	@Override
 	public double activate(double valueToActivate) {
-		// TODO Auto-generated method stub
-		return 0;
+		return peak * Math.exp((Math.pow(valueToActivate - center, 2)) / (2 * Math.pow(width, 2)));
 	}
 
 	@Override

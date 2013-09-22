@@ -39,7 +39,9 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 
 			stoppingCondition.postRoundOperation(getNNOutput());
 			counter++;
-			System.out.println("Target output: " + d.getTargetOutput() + " current output: " + getNNOutput());
+			// System.out.println("Target output: " +
+			// d.getTargetOutput() + " current output: " +
+			// getNNOutput());
 		}
 
 		System.out.println(neuralNetStructure.toString());
@@ -97,7 +99,7 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 				for (Neuron n : l.getNeuronVector()) {
 
 					for (Connection c : n.getOutgoingConnectionsFromThisNeuron()) {
-						c.setWeight(c.getWeight() * n.getNeuronValue());
+						c.setWeight(n.getNeuronValue());
 					}
 				}
 				break;

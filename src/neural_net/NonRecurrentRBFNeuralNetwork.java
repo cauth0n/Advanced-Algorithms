@@ -3,18 +3,19 @@ package neural_net;
 import java.util.List;
 
 import solver.ActivationFunction;
+import solver.GaussianBasis;
 
 /**
  * @author cauthon
  */
 public class NonRecurrentRBFNeuralNetwork extends NeuralNetworkModel {
-	public static ActivationFunction hiddenBasisFunction;
+	private ActivationFunction hiddenBasisFunction;
 	private int numNeuronsPerHiddenLayer;
 
 	public NonRecurrentRBFNeuralNetwork(ActivationFunction outputActivationFunction, int numInputNeurons, List<Double> inputVector,
-			int numOutputNeurons, int numNeuronsPerHiddenLayer, ActivationFunction hiddenBasisFunction) {
+			int numOutputNeurons, int numNeuronsPerHiddenLayer, GaussianBasis hiddenBasisFunction) {
 		super(outputActivationFunction, numInputNeurons, inputVector, numOutputNeurons);
-		NonRecurrentRBFNeuralNetwork.hiddenBasisFunction = hiddenBasisFunction;
+		this.hiddenBasisFunction = hiddenBasisFunction;
 		this.numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer;
 	}
 
@@ -27,7 +28,7 @@ public class NonRecurrentRBFNeuralNetwork extends NeuralNetworkModel {
 	}
 
 	public void addHiddenLayer() {
-		neuralNetworkStructure.addHiddenLayer(1, new RBFHiddenLayer(numNeuronsPerHiddenLayer));
+		neuralNetworkStructure.addHiddenLayer(1, new RBFHiddenLayer(numNeuronsPerHiddenLayer, hiddenBasisFunction));
 	}
 
 }

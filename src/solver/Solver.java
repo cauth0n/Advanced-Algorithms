@@ -30,14 +30,12 @@ public class Solver {
 		// this cast is not pretty, but I don't know what else to do.
 
 		validation.contructCrossValidationMethod();
-
 		train();
 		test();
 
 	}
 
 	public void train() {
-
 		for (DataPoint d : validation.getTrainingSet()) {
 			System.out.println(d.toString());
 			solveStrategy.mainTrainingLoop(d, stoppingCondition);

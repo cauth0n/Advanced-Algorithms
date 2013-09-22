@@ -14,9 +14,7 @@ public class OutputLayer extends Layer {
 		for (int i = 0; i < numNeurons; i++) {
 			Neuron n = new Neuron(NeuralNetworkModel.activationFunction, initialNodeValue);
 			neurons.add(n);
-			Connection c = new Connection(neurons.get(i), null, 0);
-			connections.add(c);
-			n.addOutgoingConnectionFromThisNeuron(c);
+			
 		}
 
 	}

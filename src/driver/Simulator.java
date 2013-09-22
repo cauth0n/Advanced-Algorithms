@@ -30,9 +30,9 @@ public class Simulator {
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 1;
-	private int numNeuronsPerHiddenLayer = 50;
+	private int numNeuronsPerHiddenLayer = 4;
 	private int numIterations = 10;
-	private double eta = .1;
+	private double eta = .9;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;

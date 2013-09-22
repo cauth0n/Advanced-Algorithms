@@ -11,12 +11,22 @@ public class Neuron {
 	protected List<Connection> incomingConnectionsToThisNeuron;
 	protected List<Connection> outgoingConnectionsFromThisneuron;
 	protected double neuronValue;
+	protected double neuronError;
 
 	public Neuron(ActivationFunction activationFunction, double neuronValue) {
 		this.activationFunction = activationFunction;
 		this.neuronValue = neuronValue;
 		incomingConnectionsToThisNeuron = new ArrayList<>();
 		outgoingConnectionsFromThisneuron = new ArrayList<>();
+		this.neuronError = 0;
+	}
+
+	public double getNeuronError() {
+		return neuronError;
+	}
+
+	public void setNeuronError(double neuronError) {
+		this.neuronError = neuronError;
 	}
 
 	public double getActivationDerivative() {

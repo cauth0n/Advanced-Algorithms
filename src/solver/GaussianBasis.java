@@ -22,8 +22,32 @@ public class GaussianBasis extends ActivationFunction {
 
 	@Override
 	public double activationDerivative(double valueToActivate) {
-		// TODO Auto-generated method stub
+
 		return 0;
+	}
+
+	public double getCenter() {
+		return center;
+	}
+
+	public void setCenter(double center) {
+		this.center = center;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getPeak() {
+		return peak;
+	}
+
+	public void setPeak(double peak) {
+		this.peak = peak;
 	}
 
 }

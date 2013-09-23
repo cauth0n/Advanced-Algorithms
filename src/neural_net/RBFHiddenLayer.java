@@ -3,6 +3,7 @@ package neural_net;
 import java.util.List;
 
 import solver.ActivationFunction;
+import solver.GaussianBasis;
 
 /**
  * @author cauthon

@@ -1,5 +1,6 @@
 package driver;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +30,15 @@ public class Simulator {
 	private List<Double> inputVector;
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
-	private int numHiddenLayers = 1;
-	private int numNeuronsPerHiddenLayer = 4;
+	private int numHiddenLayers = 2;
+	private int numNeuronsPerHiddenLayer = 200;
 	private int numIterations = 10;
 	private double eta = .9;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private int randDataPointRange = 2;
-	private int numDataPoints = 10;
+	private int numDataPoints = 1000;
 	private int k = 10;
 	private double stoppingEpsilon = 0.0001;
 
@@ -48,9 +49,9 @@ public class Simulator {
 	public Simulator() {
 		getInitialInputVector();
 		buildKFoldCrossValidation();
-		buildBackPropModel();
+		// buildBackPropModel();
 
-		// buildRBFModel();
+		buildRBFModel();
 
 	}
 
@@ -72,7 +73,7 @@ public class Simulator {
 				getNewGaussianFunction());
 		neuralNet.buildModelStructure();
 
-		System.out.println(neuralNet.toString());
+		// System.out.println(neuralNet.toString());
 
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useRadialBaseStrategy();
@@ -92,7 +93,9 @@ public class Simulator {
 		// System.out.println(neuralNet.toString());
 
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
+
 		solver.useBackPropStrategy();
+
 	}
 
 	public void linearActivation() {

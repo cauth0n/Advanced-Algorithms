@@ -58,7 +58,11 @@ public abstract class Layer {
 
 	public double getRandomWeight() {
 		Random rand = new Random();
-		return rand.nextDouble();
+		double toRet = rand.nextDouble();
+		if (rand.nextBoolean()) {
+			toRet *= -1;
+		}
+		return toRet;
 	}
 
 	@Override

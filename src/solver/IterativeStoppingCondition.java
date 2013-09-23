@@ -24,11 +24,6 @@ public class IterativeStoppingCondition extends StoppingCondition {
 		numIterationsSoFar++;
 	}
 
-	@Override
-	public void setTarget(double newTarget) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void reset() {

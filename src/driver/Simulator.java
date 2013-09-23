@@ -1,6 +1,5 @@
 package driver;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,14 +30,13 @@ public class Simulator {
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 2;
-	private int numNeuronsPerHiddenLayer = 200;
-	private int numIterations = 10;
+	private int numNeuronsPerHiddenLayer = 50;
 	private double eta = .9;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
-	private int randDataPointRange = 2;
-	private int numDataPoints = 1000;
+	private int randDataPointRange = 1;
+	private int numDataPoints = 10;
 	private int k = 10;
 	private double stoppingEpsilon = 0.0001;
 
@@ -49,9 +47,9 @@ public class Simulator {
 	public Simulator() {
 		getInitialInputVector();
 		buildKFoldCrossValidation();
-		// buildBackPropModel();
+		buildBackPropModel();
 
-		buildRBFModel();
+		// buildRBFModel();
 
 	}
 
@@ -59,8 +57,6 @@ public class Simulator {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
 		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
 		stoppingCondition = new ConvergenceStoppingCondition(stoppingEpsilon);
-		// stoppingCondition = new
-		// IterativeStoppingCondition(numIterations);
 	}
 
 	public DataPointGenerator getRosenbrockDataPointGenerator() {
@@ -69,11 +65,8 @@ public class Simulator {
 	}
 
 	public void buildRBFModel() {
-		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer,
-				getNewGaussianFunction());
+		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer, getNewGaussianFunction());
 		neuralNet.buildModelStructure();
-
-		// System.out.println(neuralNet.toString());
 
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useRadialBaseStrategy();
@@ -85,17 +78,10 @@ public class Simulator {
 
 	public void buildBackPropModel() {
 		sigmoidalActivation();
-		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers,
-				numNeuronsPerHiddenLayer);
-
+		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers, numNeuronsPerHiddenLayer);
 		neuralNet.buildModelStructure();
-
-		// System.out.println(neuralNet.toString());
-
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
-
 		solver.useBackPropStrategy();
-
 	}
 
 	public void linearActivation() {

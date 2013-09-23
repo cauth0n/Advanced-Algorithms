@@ -1,7 +1,5 @@
 package solver;
 
-import java.io.FileNotFoundException;
-
 import neural_net.NeuralNetworkStructure;
 import validation.DataPoint;
 import validation.Validation;
@@ -34,30 +32,44 @@ public class Solver {
 
 		validation.contructCrossValidationMethod();
 
-		train();
-		test();
+		double errorFromTrainingRounds = Double.MAX_VALUE;
+		stoppingCondition.reset();
+		stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+
+		int counter = 0;
+		double min = 9999, max = 0.0;
+		while (!stoppingCondition.isDone()) {
+			errorFromTrainingRounds = train();
+			// System.out.println(errorFromTrainingRounds);
+			min = Math.min(min, errorFromTrainingRounds);
+			max = Math.max(max, errorFromTrainingRounds);
+			System.out.println("Max error: " + max + "   Min error: " + min);
+			counter++;
+			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+		}
 
 		System.out.println("Final structure: ");
 		System.out.print(machineLearningModel.getModelStructure().toString());
 
 	}
 
-	public void train() {
-		int counter = 0;
+	public double train() {
+		double errorFromTrainRound = 0.0;
 		for (DataPoint d : validation.getTrainingSet()) {
-			// System.out.println(d.toString());
-
-			solveStrategy.mainTrainingLoop(d, stoppingCondition);
-			System.out.println("Training " + counter);
-			counter++;
+			errorFromTrainRound += solveStrategy.mainTrainingLoop(d, stoppingCondition);
 		}
+		errorFromTrainRound /= validation.getTestSet().size();
+		return errorFromTrainRound;
 	}
 
-	public void test() {
+	public double test() {
+		double output = 0.0;
 		for (DataPoint d : validation.getTestSet()) {
-			double output = solveStrategy.mainTestLoop(d);
-			System.out.println("Target: " + d.getTargetOutput() + " Neural net output: " + output + " Difference: " + (d.getTargetOutput() - output));
+
+			output = solveStrategy.mainTestLoop(d);
+			output = d.getTargetOutput() - output;
 		}
+		return output;
 	}
 
 	public void useRadialBaseStrategy() {

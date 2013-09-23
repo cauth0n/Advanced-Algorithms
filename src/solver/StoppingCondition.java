@@ -6,8 +6,6 @@ public abstract class StoppingCondition {
 
 	public abstract void postRoundOperation(double postRoundOperation);
 
-	public abstract void setTarget(double newTarget);
-
 	public abstract void reset();
 
 }

@@ -1,6 +1,7 @@
 package solver;
 
 import java.util.List;
+import java.util.Scanner;
 
 import neural_net.Connection;
 import neural_net.Layer;
@@ -25,6 +26,13 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 
 	public void print() {
 		System.out.println(neuralNetStructure.toString());
+	}
+
+	public void pause() {
+		System.out.println(neuralNetStructure.toString());
+		Scanner in = new Scanner(System.in);
+		System.out.println("Press enter to continue");
+		String go = in.next();
 	}
 
 	public double getNNOutput() {

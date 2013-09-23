@@ -1,9 +1,6 @@
 package solver;
 
-import neural_net.Connection;
-import neural_net.Layer;
 import neural_net.NeuralNetworkStructure;
-import neural_net.Neuron;
 import validation.DataPoint;
 
 /**
@@ -17,30 +14,18 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 
 	public double mainTestLoop(DataPoint d) {
 		feedForward(d.getInputValues());
-		double output = getNNOutput();
-		System.out.println(d.toString());
-		return output;
+		return getNNOutput();
 	}
 
-	public void mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
-		stoppingCondition.reset();
+	public double mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
+		double errorFromThisRound = 0.0;
 		targetOutput = d.getTargetOutput();
-		stoppingCondition.setTarget(targetOutput);
-		int counter = 0;
-		while (!stoppingCondition.isDone()) {
-			feedForward(d.getInputValues());
-			backPropagateError();
-			backPropagateWeightErrors();
-			updateWeights();
-			stoppingCondition.postRoundOperation(getNNOutput());
-			counter++;
-			// System.out.println("Target output: " +
-			// d.getTargetOutput() + " current output: " +
-			// getNNOutput());
-		}
-
-		// System.out.println(neuralNetStructure.toString());
-		// System.out.println(counter + " Iterations");
+		feedForward(d.getInputValues());
+		backPropagateError();
+		backPropagateWeightErrors();
+		updateWeights();
+		errorFromThisRound = Math.abs(getNNOutput() - d.getTargetOutput());
+		return errorFromThisRound;
 	}
 
 }

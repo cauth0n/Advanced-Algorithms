@@ -15,36 +15,22 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 	}
 
 	@Override
-	public void mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
-		stoppingCondition.reset();
+	public double mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
+		double errorFromThisRound = 0.0;
+
 		targetOutput = d.getTargetOutput();
-		stoppingCondition.setTarget(targetOutput);
 
 		int counter = 0;
-		while (!stoppingCondition.isDone()) {
-			feedForward(d.getInputValues());
 
-			backPropagateWeightErrors();
-			updateWeights();
-			for (Layer l : neuralNetStructure.getLayers()) {
+		feedForward(d.getInputValues());
 
-	/*			computeCenterSize(l);
-				adjustCenters(l);
-				computeWidthSize(l);
-				adjustWidths(l);*/
-			}
-			stoppingCondition.postRoundOperation(getNNOutput());
-			counter++;
-			System.out.println("Target output: " + d.getTargetOutput() + " current output: " + getNNOutput());
-		}
+		backPropagateWeightErrors();
+		updateWeights();
 
-		System.out.println(neuralNetStructure.toString());
-		System.out.println(counter + " Iterations");
+		stoppingCondition.postRoundOperation(getNNOutput());
+		counter++;
 
-	}
-
-	public void computeCenterSize() {
-
+		return errorFromThisRound;
 	}
 
 	@Override

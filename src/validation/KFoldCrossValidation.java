@@ -70,4 +70,19 @@ public class KFoldCrossValidation extends Validation {
 		return toRet;
 	}
 
+	@Override
+	public void normalizeOutputs() {
+		double maxTarget = 0.0;
+		for (List<DataPoint> listD : dataPointDivision.values()) {
+			for (DataPoint d : listD) {
+				maxTarget = Math.max(maxTarget, Math.abs(d.getTargetOutput()));
+			}
+		}
+		for (List<DataPoint> listD : dataPointDivision.values()) {
+			for (DataPoint d : listD) {
+				d.setNormalizedOutput(d.getTargetOutput() / maxTarget);
+			}
+		}
+	}
+
 }

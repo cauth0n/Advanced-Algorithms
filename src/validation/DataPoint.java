@@ -4,6 +4,7 @@ import java.util.List;
 
 public abstract class DataPoint {
 
+	protected double normalizedOutput;
 	protected double targetOutput;
 	protected List<Double> inputValues;
 
@@ -18,6 +19,14 @@ public abstract class DataPoint {
 
 	public List<Double> getInputValues() {
 		return inputValues;
+	}
+
+	public double getNormalizedOutput() {
+		return normalizedOutput;
+	}
+
+	public void setNormalizedOutput(double normalizedOutput) {
+		this.normalizedOutput = normalizedOutput;
 	}
 
 	public String toString() {

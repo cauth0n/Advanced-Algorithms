@@ -2,7 +2,7 @@ package solver;
 
 public class SigmoidActivationFunction extends ActivationFunction {
 
-	private double alpha = .001;
+	private double alpha = 1;
 
 	// logistic
 	@Override

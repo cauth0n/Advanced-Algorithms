@@ -30,6 +30,12 @@ public class FiveByTwoCrossValidation extends Validation {
 	@Override
 	public void contructCrossValidationMethod() {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void normalizeOutputs() {
+		// TODO Auto-generated method stub
 		
 	}
 

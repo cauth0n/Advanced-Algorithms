@@ -31,6 +31,7 @@ public class Solver {
 		// this cast is not pretty, but I don't know what else to do.
 
 		validation.contructCrossValidationMethod();
+		validation.normalizeOutputs();
 
 		double errorFromTrainingRounds = Double.MAX_VALUE;
 		stoppingCondition.reset();
@@ -39,17 +40,18 @@ public class Solver {
 		int counter = 0;
 		double min = 9999, max = 0.0;
 		while (!stoppingCondition.isDone()) {
+			// while (counter < 50) {
 			errorFromTrainingRounds = train();
-			// System.out.println(errorFromTrainingRounds);
-			min = Math.min(min, errorFromTrainingRounds);
-			max = Math.max(max, errorFromTrainingRounds);
-			System.out.println("Max error: " + max + "   Min error: " + min);
+			System.out.println(errorFromTrainingRounds);
 			counter++;
 			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
 		}
 
 		System.out.println("Final structure: ");
 		System.out.print(machineLearningModel.getModelStructure().toString());
+
+		// System.out.println(test());
+		// System.out.print(machineLearningModel.getModelStructure().toString());
 
 	}
 
@@ -66,8 +68,9 @@ public class Solver {
 		double output = 0.0;
 		for (DataPoint d : validation.getTestSet()) {
 
+			System.out.println(d.toString());
 			output = solveStrategy.mainTestLoop(d);
-			output = d.getTargetOutput() - output;
+			output = d.getNormalizedOutput() - output;
 		}
 		return output;
 	}

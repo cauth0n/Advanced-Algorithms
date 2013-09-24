@@ -114,8 +114,7 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
 						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
 					}
-					n.setNeuronValue(newNeuronValue);
-					// linear for output
+					n.activate(newNeuronValue);
 				}
 				break;
 			case "INPUT":

@@ -23,4 +23,6 @@ public abstract class Validation {
 
 	public abstract List<DataPoint> getTestSet();
 
+	public abstract void normalizeOutputs();
+
 }

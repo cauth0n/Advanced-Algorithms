@@ -19,12 +19,12 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 
 	public double mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
 		double errorFromThisRound = 0.0;
-		targetOutput = d.getTargetOutput();
+		targetOutput = d.getNormalizedOutput();
 		feedForward(d.getInputValues());
 		backPropagateError();
 		backPropagateWeightErrors();
 		updateWeights();
-		errorFromThisRound = Math.abs(getNNOutput() - d.getTargetOutput());
+		errorFromThisRound = Math.abs(getNNOutput() - targetOutput);
 		return errorFromThisRound;
 	}
 

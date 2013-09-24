@@ -31,12 +31,12 @@ public class Simulator {
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 2;
 	private int numNeuronsPerHiddenLayer = 100;
-	private double eta = .2;
+	private double eta = .1;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private int randDataPointRange = 1;
-	private int numDataPoints = 100;
+	private int numDataPoints = 1000;
 	private int k = 10;
 	private double stoppingEpsilon = 0.0001;
 

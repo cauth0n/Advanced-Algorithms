@@ -2,16 +2,16 @@ package solver;
 
 import java.util.Scanner;
 
-public class ConvergenceStoppingCondition extends StoppingCondition {
+public class ConvergenceStoppingConditionUsingLinearRegression extends StoppingCondition {
 	private double epsilon;
 	private double newError;
 	private int regressionCounter;
-	private ErrorRange errorRange;
+	private LinearRegression errorRange;
 
-	public ConvergenceStoppingCondition(double epsilon) {
+	public ConvergenceStoppingConditionUsingLinearRegression(double epsilon) {
 		this.epsilon = epsilon;
 		regressionCounter = 0;
-		errorRange = new ErrorRange(100);
+		errorRange = new LinearRegression(100);
 	}
 
 	@Override

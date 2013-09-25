@@ -36,21 +36,13 @@ public class Solver {
 		double errorFromTrainingRounds = Double.MAX_VALUE;
 		stoppingCondition.reset();
 
-		int counter = 0;
-		double min = 9999, max = 0.0;
 		while (!stoppingCondition.isDone()) {
-			// while (counter < 50) {
 			errorFromTrainingRounds = train();
-			//System.out.println(errorFromTrainingRounds);
-			counter++;
 			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
 		}
 
 		System.out.println("Final structure: ");
 		System.out.print(machineLearningModel.getModelStructure().toString());
-
-		// System.out.println(test());
-		// System.out.print(machineLearningModel.getModelStructure().toString());
 
 	}
 
@@ -77,7 +69,14 @@ public class Solver {
 	public void useRadialBaseStrategy() {
 		solveStrategy = new RadialBasisStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
 		validation.contructCrossValidationMethod();
-		train();
-		test();
+		double errorFromTrainingRounds = Double.MAX_VALUE;
+		stoppingCondition.reset();
+
+		while (!stoppingCondition.isDone()) {
+			errorFromTrainingRounds = train();
+			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+			//System.out.println(errorFromTrainingRounds);
+		}
+		// test();
 	}
 }

@@ -2,26 +2,22 @@ package neural_net;
 
 import java.util.List;
 
-import solver.ActivationFunction;
-import solver.GaussianBasis;
-
 /**
  * @author cauthon
  */
 public class RBFHiddenLayer extends HiddenLayer {
-	private ActivationFunction basisFunction;
 
-	public RBFHiddenLayer(int numNeurons, ActivationFunction basisFunction) {
+	public RBFHiddenLayer(int numNeurons) {
 		super(numNeurons);
-		this.basisFunction = basisFunction;
 		layerType = "RBFHIDDEN";
 	}
 
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new Neuron(basisFunction, initialNodeValue));
+			neurons.add(new Neuron(null, initialNodeValue));
 		}
+
 		for (int i = 0; i < neurons.size(); i++) {
 
 			int numRemainingOutgoingConnectionsPerNeuron = downStreamNeurons.size();
@@ -35,14 +31,13 @@ public class RBFHiddenLayer extends HiddenLayer {
 				numRemainingDownStreamNeurons--;
 			}
 		}
+
 		for (Neuron n : downStreamNeurons) {
 			for (Connection c : connections) {
-				if (c.getToNeuron() == n) {
+				if (c.getToNeuron().equals(n)) {
 					n.addIncomingConnectionToThisNeuron(c);
 				}
 			}
 		}
-
 	}
-
 }

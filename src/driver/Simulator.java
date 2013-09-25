@@ -7,8 +7,7 @@ import neural_net.NeuralNetworkModel;
 import neural_net.NonRecurrentNeuralNetwork;
 import neural_net.NonRecurrentRBFNeuralNetwork;
 import solver.ActivationFunction;
-import solver.ConvergenceStoppingCondition;
-import solver.GaussianBasis;
+import solver.ConvergenceStoppingConditionUsingLinearRegression;
 import solver.LinearActivationFunction;
 import solver.SigmoidActivationFunction;
 import solver.Solver;
@@ -21,7 +20,6 @@ import validation.Validation;
 public class Simulator {
 
 	private ActivationFunction activationFunction;
-	private ActivationFunction rbfHiddenActivationFunction;
 	private NeuralNetworkModel neuralNet;
 	private Validation validation;
 	private Solver solver;
@@ -30,50 +28,42 @@ public class Simulator {
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 2;
-	private int numNeuronsPerHiddenLayer = 100;
+	private int numNeuronsPerHiddenLayer = 4;
 	private double eta = .1;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
-	private int randDataPointRange = 1;
+	private double dataPointRange = 1;
 	private int numDataPoints = 100;
 	private int k = 10;
 	private double stoppingEpsilon = 0.0001;
 
-	private double gaussianInitialPeak = 1.0;
-	private double gaussianInitialCenter = 1.0;
-	private double gaussianInitialWidth = 1.0;
-
 	public Simulator() {
 		getInitialInputVector();
 		buildKFoldCrossValidation();
-		buildBackPropModel();
+		// buildBackPropModel();
 
-		// buildRBFModel();
+		buildRBFModel();
 
 	}
 
 	public void buildKFoldCrossValidation() {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
 		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
-		stoppingCondition = new ConvergenceStoppingCondition(stoppingEpsilon);
+		stoppingCondition = new ConvergenceStoppingConditionUsingLinearRegression(stoppingEpsilon);
 	}
 
 	public DataPointGenerator getRosenbrockDataPointGenerator() {
-		DataPointGenerator dpg = new RosenbrockDataPointGenerator(rosenbrockVectorSize, randDataPointRange);
+		DataPointGenerator dpg = new RosenbrockDataPointGenerator(rosenbrockVectorSize, dataPointRange);
 		return dpg;
 	}
 
 	public void buildRBFModel() {
-		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer, getNewGaussianFunction());
+		sigmoidalActivation();
+		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer, dataPointRange);
 		neuralNet.buildModelStructure();
-
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useRadialBaseStrategy();
-	}
-
-	public GaussianBasis getNewGaussianFunction() {
-		return new GaussianBasis(gaussianInitialPeak, gaussianInitialCenter, gaussianInitialWidth);
 	}
 
 	public void buildBackPropModel() {

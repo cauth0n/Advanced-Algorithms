@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class RosenbrockDataPointGenerator extends DataPointGenerator {
 	private int vectorSize;
-	private int inputRange;
+	private double inputRange;
 
-	public RosenbrockDataPointGenerator(int vectorSize, int inputRange) {
+	public RosenbrockDataPointGenerator(int vectorSize, double inputRange) {
 		this.vectorSize = vectorSize;
 		this.inputRange = inputRange;
 	}

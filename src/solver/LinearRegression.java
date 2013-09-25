@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * @author cauthon
  */
-public class ErrorRange {
+public class LinearRegression {
 
 	private double slope;
 	private double size;
 	private List<Double> errors;
 
-	public ErrorRange(double size) {
+	public LinearRegression(double size) {
 		this.size = size;
 		errors = new ArrayList<>();
 	}

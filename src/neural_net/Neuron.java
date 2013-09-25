@@ -21,6 +21,10 @@ public class Neuron {
 		this.neuronError = 0;
 	}
 
+	public ActivationFunction getActivationFunction() {
+		return activationFunction;
+	}
+
 	public double getNeuronError() {
 		return neuronError;
 	}
@@ -75,6 +79,10 @@ public class Neuron {
 
 	public void setNeuronValue(double neuronValue) {
 		this.neuronValue = neuronValue;
+	}
+
+	public void setActivationFunction(ActivationFunction activationFunction) {
+		this.activationFunction = activationFunction;
 	}
 
 	public String toString() {

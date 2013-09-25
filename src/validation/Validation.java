@@ -9,6 +9,7 @@ public abstract class Validation {
 	protected DataPointGenerator dataPointGenerator;
 	protected List<DataPoint> trainingDataSet;
 	protected List<DataPoint> testDataSet;
+	protected double largestDataOut;
 
 	public Validation(int numDataPoints, DataPointGenerator dataPointGenerator) {
 		this.numDataPoints = numDataPoints;
@@ -24,5 +25,7 @@ public abstract class Validation {
 	public abstract List<DataPoint> getTestSet();
 
 	public abstract void normalizeOutputs();
+
+	public abstract double deNormalize(double valToDeNormalize);
 
 }

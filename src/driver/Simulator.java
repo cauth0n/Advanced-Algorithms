@@ -36,7 +36,7 @@ public class Simulator {
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private int randDataPointRange = 1;
-	private int numDataPoints = 1000;
+	private int numDataPoints = 100;
 	private int k = 10;
 	private double stoppingEpsilon = 0.0001;
 

@@ -78,11 +78,18 @@ public class KFoldCrossValidation extends Validation {
 				maxTarget = Math.max(maxTarget, Math.abs(d.getTargetOutput()));
 			}
 		}
+		largestDataOut = maxTarget;
 		for (List<DataPoint> listD : dataPointDivision.values()) {
 			for (DataPoint d : listD) {
 				d.setNormalizedOutput(d.getTargetOutput() / maxTarget);
 			}
 		}
+	}
+
+	@Override
+	public double deNormalize(double valToDeNormalize) {
+		return valToDeNormalize * largestDataOut;
+
 	}
 
 }

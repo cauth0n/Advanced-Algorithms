@@ -35,14 +35,13 @@ public class Solver {
 
 		double errorFromTrainingRounds = Double.MAX_VALUE;
 		stoppingCondition.reset();
-		stoppingCondition.postRoundOperation(errorFromTrainingRounds);
 
 		int counter = 0;
 		double min = 9999, max = 0.0;
 		while (!stoppingCondition.isDone()) {
 			// while (counter < 50) {
 			errorFromTrainingRounds = train();
-			System.out.println(errorFromTrainingRounds);
+			//System.out.println(errorFromTrainingRounds);
 			counter++;
 			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
 		}

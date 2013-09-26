@@ -17,6 +17,16 @@ import validation.KFoldCrossValidation;
 import validation.RosenbrockDataPointGenerator;
 import validation.Validation;
 
+/**
+ * Simulator class. Effectively the heart of this framework. Holds all model
+ * params, controls which model to build, how to generate data points, how to
+ * validate...
+ * 
+ * I will need to refactor this once done with the first project.
+ * 
+ * @author cauth0n
+ * 
+ */
 public class Simulator {
 
 	public static double maxDist = -1 * Double.MAX_VALUE;
@@ -29,7 +39,7 @@ public class Simulator {
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 2;
-	private int numNeuronsPerHiddenLayer = 100;
+	private int numNeuronsPerHiddenLayer = 1000;
 	private double eta = .1;
 	private double alpha = 0;
 

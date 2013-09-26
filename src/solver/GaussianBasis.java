@@ -52,4 +52,8 @@ public class GaussianBasis extends ActivationFunction {
 		// don't need to differentiate a gaussian
 	}
 
+	public void setCenterVector(List<Double> centerVector) {
+		this.centerVector = centerVector;
+	}
+
 }

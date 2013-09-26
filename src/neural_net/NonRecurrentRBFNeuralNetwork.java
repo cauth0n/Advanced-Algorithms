@@ -15,7 +15,8 @@ public class NonRecurrentRBFNeuralNetwork extends NeuralNetworkModel {
 	private int numNeuronsPerHiddenLayer;
 	private double dataPointRange;
 
-	public NonRecurrentRBFNeuralNetwork(ActivationFunction outputActivationFunction, int numInputNeurons, List<Double> inputVector, int numOutputNeurons, int numNeuronsPerHiddenLayer, double dataPointRange) {
+	public NonRecurrentRBFNeuralNetwork(ActivationFunction outputActivationFunction, int numInputNeurons, List<Double> inputVector,
+			int numOutputNeurons, int numNeuronsPerHiddenLayer, double dataPointRange) {
 		super(outputActivationFunction, numInputNeurons, inputVector, numOutputNeurons);
 		this.numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer;
 		this.dataPointRange = dataPointRange;

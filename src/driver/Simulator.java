@@ -34,7 +34,7 @@ public class Simulator {
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private double dataPointRange = 1;
-	private int numDataPoints = 100;
+	private int numDataPoints = 10;
 	private int k = 10;
 	private double stoppingEpsilon = 0.0001;
 
@@ -44,7 +44,6 @@ public class Simulator {
 		// buildBackPropModel();
 
 		buildRBFModel();
-
 	}
 
 	public void buildKFoldCrossValidation() {
@@ -60,7 +59,8 @@ public class Simulator {
 
 	public void buildRBFModel() {
 		sigmoidalActivation();
-		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer, dataPointRange);
+		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer,
+				dataPointRange);
 		neuralNet.buildModelStructure();
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useRadialBaseStrategy();
@@ -68,7 +68,8 @@ public class Simulator {
 
 	public void buildBackPropModel() {
 		sigmoidalActivation();
-		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers, numNeuronsPerHiddenLayer);
+		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers,
+				numNeuronsPerHiddenLayer);
 		neuralNet.buildModelStructure();
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useBackPropStrategy();

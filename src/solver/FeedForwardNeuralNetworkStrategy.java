@@ -39,26 +39,4 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 		return neuralNetStructure.getLayers().get(neuralNetStructure.getLayers().size() - 1).getNeuronVector().get(0).getNeuronValue();
 	}
 
-	public void updateWeights() {
-		for (Layer l : neuralNetStructure.getLayers()) {
-			for (Connection c : l.getConnectionVector()) {
-				c.appendWeight(c.getDeltaWeight() + alpha * c.getMomentumDeltaWeight());
-				c.updateTimeStep();
-			}
-		}
-	}
-
-	public void backPropagateWeightErrors() {
-		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
-
-			for (Connection c : neuralNetStructure.getLayers().get(i).getConnectionVector()) {
-				double value = (-1 * eta * c.getToNeuron().getNeuronError() * c.getFromNeuron().getNeuronValue());
-				c.setDeltaWeight(value);
-			}
-		}
-	}
-
-
-
-
 }

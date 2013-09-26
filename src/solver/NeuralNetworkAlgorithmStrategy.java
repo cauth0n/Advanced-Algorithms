@@ -1,6 +1,5 @@
 package solver;
 
-import validation.DataPoint;
 
 /**
  * @author cauthon

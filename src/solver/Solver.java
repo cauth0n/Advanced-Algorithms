@@ -1,5 +1,6 @@
 package solver;
 
+import neural_net.Layer;
 import neural_net.NeuralNetworkStructure;
 import validation.DataPoint;
 import validation.Validation;
@@ -23,7 +24,6 @@ public class Solver {
 		this.alpha = alpha;
 		this.eta = eta;
 		this.stoppingCondition = stoppingCondition;
-
 	}
 
 	public void useBackPropStrategy() {
@@ -49,7 +49,8 @@ public class Solver {
 	public double train() {
 		double errorFromTrainRound = 0.0;
 		for (DataPoint d : validation.getTrainingSet()) {
-			errorFromTrainRound += solveStrategy.mainTrainingLoop(d, stoppingCondition);
+			errorFromTrainRound += solveStrategy.mainTrainingLoop(d);
+
 		}
 		errorFromTrainRound /= validation.getTestSet().size();
 		return errorFromTrainRound;
@@ -67,16 +68,26 @@ public class Solver {
 	}
 
 	public void useRadialBaseStrategy() {
-		solveStrategy = new RadialBasisStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
+
 		validation.contructCrossValidationMethod();
+		validation.normalizeOutputs();
+		solveStrategy = new RadialBasisStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta, validation.getTrainingSet());
+
 		double errorFromTrainingRounds = Double.MAX_VALUE;
 		stoppingCondition.reset();
+
+//		for (int i = 0; i < 20; i++) {
+//			errorFromTrainingRounds = train();
+//			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+//			// System.out.println(errorFromTrainingRounds);
+//		}
 
 		while (!stoppingCondition.isDone()) {
 			errorFromTrainingRounds = train();
 			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
-			//System.out.println(errorFromTrainingRounds);
+			// System.out.println(errorFromTrainingRounds);
 		}
+
 		// test();
 	}
 }

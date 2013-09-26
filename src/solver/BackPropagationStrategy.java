@@ -22,15 +22,35 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		return getNNOutput();
 	}
 
-	public double mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
+	public double mainTrainingLoop(DataPoint d) {
 		double errorFromThisRound = 0.0;
 		targetOutput = d.getNormalizedOutput();
+		
 		feedForward(d.getInputValues());
 		backPropagateError();
 		backPropagateWeightErrors();
 		updateWeights();
 		errorFromThisRound = Math.abs(getNNOutput() - targetOutput);
 		return errorFromThisRound;
+	}
+	
+	public void updateWeights() {
+		for (Layer l : neuralNetStructure.getLayers()) {
+			for (Connection c : l.getConnectionVector()) {
+				c.appendWeight(c.getDeltaWeight() + alpha * c.getMomentumDeltaWeight());
+				c.updateTimeStep();
+			}
+		}
+	}
+
+	public void backPropagateWeightErrors() {
+		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
+
+			for (Connection c : neuralNetStructure.getLayers().get(i).getConnectionVector()) {
+				double value = (-1 * eta * c.getToNeuron().getNeuronError() * c.getFromNeuron().getNeuronValue());
+				c.setDeltaWeight(value);
+			}
+		}
 	}
 
 	public void backPropagateError() {
@@ -49,8 +69,6 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 			}
 		}
 	}
-	
-
 
 	public void calculateOutputErrorSignals(Layer l) {
 		for (Neuron n : l.getNeuronVector()) {

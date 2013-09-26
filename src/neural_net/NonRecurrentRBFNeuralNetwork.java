@@ -15,8 +15,7 @@ public class NonRecurrentRBFNeuralNetwork extends NeuralNetworkModel {
 	private int numNeuronsPerHiddenLayer;
 	private double dataPointRange;
 
-	public NonRecurrentRBFNeuralNetwork(ActivationFunction outputActivationFunction, int numInputNeurons, List<Double> inputVector,
-			int numOutputNeurons, int numNeuronsPerHiddenLayer, double dataPointRange) {
+	public NonRecurrentRBFNeuralNetwork(ActivationFunction outputActivationFunction, int numInputNeurons, List<Double> inputVector, int numOutputNeurons, int numNeuronsPerHiddenLayer, double dataPointRange) {
 		super(outputActivationFunction, numInputNeurons, inputVector, numOutputNeurons);
 		this.numNeuronsPerHiddenLayer = numNeuronsPerHiddenLayer;
 		this.dataPointRange = dataPointRange;
@@ -55,15 +54,15 @@ public class NonRecurrentRBFNeuralNetwork extends NeuralNetworkModel {
 	}
 
 	public void buildBasisFunction() {
-		List<Double> centerVector = new ArrayList<>();
+		List<Double> centerVector;
 		for (Layer l : neuralNetworkStructure.getLayers()) {
 			if (l.getLayerType().equals("RBFHIDDEN")) {
 				for (Neuron n : l.getNeuronVector()) {
-					centerVector.clear();
+					centerVector = new ArrayList<>();
 					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
 						centerVector.add(c.getWeight());
 					}
-					n.setActivationFunction(new GaussianBasis(centerVector));
+					n.setActivationFunction(new GaussianBasis(centerVector, numNeuronsPerHiddenLayer));
 				}
 			}
 		}

@@ -13,23 +13,36 @@ import validation.DataPoint;
  */
 public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 
-	public RadialBasisStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
+	public RadialBasisStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta, List<DataPoint> trainingSet) {
 		super(neuralNetStructure, alpha, eta);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public double mainTrainingLoop(DataPoint d, StoppingCondition stoppingCondition) {
+	public double mainTrainingLoop(DataPoint d) {
 		double errorFromThisRound = 0.0;
 
-		targetOutput = d.getTargetOutput();
-
+		targetOutput = d.getNormalizedOutput();
 		feedForward(d.getInputValues());
 		backPropagateWeightErrors();
-		updateWeights();
+		// System.out.println(targetOutput);
+		// pause();
 
 		errorFromThisRound = Math.abs(getNNOutput() - targetOutput);
 		return errorFromThisRound;
+	}
+
+	public void backPropagateWeightErrors() {
+		for (Layer l : neuralNetStructure.getLayers()) {
+			if (l.getLayerType().equals("RBFHIDDEN")) {
+				for (Neuron n : l.getNeuronVector()) {
+					for (Connection c : n.getOutgoingConnectionsFromThisNeuron()) {
+						c.appendWeight(eta * n.getNeuronValue() * (targetOutput - getNNOutput()));
+						// I believe this is right. The output layer only
+						// has 1 neuron, the new weight is only the only value.
+					}
+				}
+			}
+		}
 	}
 
 	public void feedForward(List<Double> inputValues) {
@@ -39,12 +52,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 			case "RBFHIDDEN":
 				for (Neuron n : l.getNeuronVector()) {
 					((GaussianBasis) n.getActivationFunction()).setXVector(inputValues);
-					double newNeuronValue = 0.0;
-					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
-						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
-					}
-
-					n.activate(newNeuronValue);
+					n.activate(0.0);
 				}
 				break;
 			case "OUTPUT":
@@ -53,7 +61,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
 						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
 					}
-					// n.setNeuronValue(newNeuronValue);// linear
+					// n.setNeuronValue(newNeuronValue);
 					n.activate(newNeuronValue);
 				}
 				break;

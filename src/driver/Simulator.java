@@ -19,6 +19,7 @@ import validation.Validation;
 
 public class Simulator {
 
+	public static double maxDist = -1 * Double.MAX_VALUE;
 	private ActivationFunction activationFunction;
 	private NeuralNetworkModel neuralNet;
 	private Validation validation;
@@ -28,15 +29,15 @@ public class Simulator {
 	private int numInputNeurons = 2;
 	private int numOutputNeurons = 1;
 	private int numHiddenLayers = 2;
-	private int numNeuronsPerHiddenLayer = 4;
+	private int numNeuronsPerHiddenLayer = 100;
 	private double eta = .1;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
 	private double dataPointRange = 1;
-	private int numDataPoints = 10;
+	private int numDataPoints = 100;
 	private int k = 10;
-	private double stoppingEpsilon = 0.0001;
+	private double stoppingConditionSlope = 0.0001;
 
 	public Simulator() {
 		getInitialInputVector();
@@ -49,7 +50,7 @@ public class Simulator {
 	public void buildKFoldCrossValidation() {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
 		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
-		stoppingCondition = new ConvergenceStoppingConditionUsingLinearRegression(stoppingEpsilon);
+		stoppingCondition = new ConvergenceStoppingConditionUsingLinearRegression(stoppingConditionSlope);
 	}
 
 	public DataPointGenerator getRosenbrockDataPointGenerator() {
@@ -59,8 +60,7 @@ public class Simulator {
 
 	public void buildRBFModel() {
 		sigmoidalActivation();
-		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer,
-				dataPointRange);
+		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer, dataPointRange);
 		neuralNet.buildModelStructure();
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useRadialBaseStrategy();
@@ -68,8 +68,7 @@ public class Simulator {
 
 	public void buildBackPropModel() {
 		sigmoidalActivation();
-		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers,
-				numNeuronsPerHiddenLayer);
+		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers, numNeuronsPerHiddenLayer);
 		neuralNet.buildModelStructure();
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useBackPropStrategy();

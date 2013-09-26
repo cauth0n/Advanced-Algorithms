@@ -2,35 +2,46 @@ package solver;
 
 import java.util.List;
 
+import driver.Simulator;
+
 /**
  * @author cauthon
  */
 public class GaussianBasis extends ActivationFunction {
-	private final double sigma = .5;
+
+	private double sigma = .5;
 	private List<Double> centerVector;
 	private List<Double> xVector;
+	private int totalGaussianFunctions;
 
-	public GaussianBasis(List<Double> centerVector) {
+	public GaussianBasis(List<Double> centerVector, int totalGaussianFunctions) {
 		this.centerVector = centerVector;
+		this.totalGaussianFunctions = totalGaussianFunctions;
 	}
 
 	public void setXVector(List<Double> xVector) {
 		this.xVector = xVector;
 	}
 
-	@Override
-	public double activate(double valueToActivate) {
-		return Math.exp(-1 * Math.pow(getScalarEuclideanNorm(xVector), 2) / (2 * Math.pow(sigma, 2)));
+	public void setSigma() {
+		sigma = Simulator.maxDist / totalGaussianFunctions;
 	}
 
-	public double getScalarEuclideanNorm(List<Double> xVector) {
+	@Override
+	public double activate(double valueToActivate) {
+		double value = Math.exp(-1 * Math.pow(getScalarEuclideanNorm(), 2) / (2 * Math.pow(sigma, 2)));
+		return value;
+	}
+
+	public double getScalarEuclideanNorm() {
 		double toRet = 0.0;
-		if (centerVector.size() != xVector.size()) {
-			System.out.println("Different sized center and x vector");
-		}
 		for (int i = 0; i < centerVector.size(); i++) {
-			toRet += (xVector.get(i) - centerVector.get(i));
+			toRet += Math.pow(xVector.get(i) - centerVector.get(i), 2);
 		}
+		if (Simulator.maxDist < toRet) {
+			Simulator.maxDist = toRet;
+		}
+		toRet = Math.sqrt(toRet);
 		return toRet;
 	}
 
@@ -39,10 +50,6 @@ public class GaussianBasis extends ActivationFunction {
 		System.out.println("got here. bad.");
 		return 0;
 		// don't need to differentiate a gaussian
-	}
-
-	public void setCenterVector(List<Double> centerVector) {
-		this.centerVector = centerVector;
 	}
 
 }

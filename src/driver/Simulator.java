@@ -37,7 +37,7 @@ public class Simulator {
 	private List<Double> inputVector;
 	private int numInputNeurons = 5;
 	private int numOutputNeurons = 1;
-	private int numHiddenLayers = 0;
+	private int numHiddenLayers = 1;
 	private int numNeuronsPerHiddenLayer = 100;
 	private double eta = .4;
 	private double alpha = 0;
@@ -51,22 +51,33 @@ public class Simulator {
 	public Simulator() {
 		getInitialInputVector();
 		buildKFoldCrossValidation();
-		buildBackPropModel();
+		//buildBackPropModel();
 
-		// buildRBFModel();
+		buildRBFModel();
 	}
 
+	/**
+	 * Build a k fold cross validation method.
+	 */
 	public void buildKFoldCrossValidation() {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
 		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
 		stoppingCondition = new ConvergenceStoppingConditionUsingLinearRegression(stoppingConditionSlope);
 	}
 
+	/**
+	 * Initializes a new data point generator and returns it
+	 * 
+	 * @return
+	 */
 	public DataPointGenerator getRosenbrockDataPointGenerator() {
 		DataPointGenerator dpg = new RosenbrockDataPointGenerator(rosenbrockVectorSize, dataPointRange);
 		return dpg;
 	}
 
+	/**
+	 * Method to build and train/test a rbf model.
+	 */
 	public void buildRBFModel() {
 		sigmoidalActivation();
 		neuralNet = new NonRecurrentRBFNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numNeuronsPerHiddenLayer, dataPointRange);
@@ -75,6 +86,9 @@ public class Simulator {
 		solver.useRadialBaseStrategy();
 	}
 
+	/**
+	 * method to build and train/test a MLP NN
+	 */
 	public void buildBackPropModel() {
 		sigmoidalActivation();
 		neuralNet = new NonRecurrentNeuralNetwork(activationFunction, numInputNeurons, inputVector, numOutputNeurons, numHiddenLayers, numNeuronsPerHiddenLayer);
@@ -83,10 +97,16 @@ public class Simulator {
 		solver.useBackPropStrategy();
 	}
 
+	/**
+	 * Sets sigmoid activation to static var activationFunction
+	 */
 	public void sigmoidalActivation() {
 		activationFunction = new SigmoidActivationFunction();
 	}
 
+	/**
+	 * Initial input vector, just as a space holder
+	 */
 	public void getInitialInputVector() {
 		inputVector = new ArrayList<>();
 		for (int i = 1; i <= numInputNeurons; i++) {

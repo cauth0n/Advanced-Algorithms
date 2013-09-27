@@ -68,11 +68,12 @@ public class Solver {
 		List<Double> err = new ArrayList<>();
 		long startTime;
 		long endTime;
+		System.out.println("Initial structure for backprop: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
 		for (int i = 0; i < 10; i++) {
 			double errorFromTrainingRounds = Double.MAX_VALUE;
 			startTime = System.currentTimeMillis();
 			stoppingCondition.reset();
-			System.out.println(i);
+			System.out.println("Fold " + i);
 			for (int j = 0; j < 1000; j++) {
 				// while (!stoppingCondition.isDone()) {
 				errorFromTrainingRounds = train();
@@ -90,6 +91,7 @@ public class Solver {
 		for (Double d : err) {
 			System.out.println(d + "");
 		}
+		System.out.println("\nFinal structure for backprop: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
 	}
 
 	/**
@@ -172,11 +174,12 @@ public class Solver {
 		List<Double> err = new ArrayList<>();
 		long startTime;
 		long endTime;
+		System.out.println("Initial structure for RBF: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
 		for (int i = 0; i < 10; i++) {
 			double errorFromTrainingRounds = Double.MAX_VALUE;
 			startTime = System.currentTimeMillis();
 			stoppingCondition.reset();
-			System.out.println(i);
+			System.out.println("Fold " + i);
 			while (!stoppingCondition.isDone()) {
 				errorFromTrainingRounds = train();
 				stoppingCondition.postRoundOperation(errorFromTrainingRounds);
@@ -193,5 +196,6 @@ public class Solver {
 		for (Double d : err) {
 			System.out.println(d + "");
 		}
+		System.out.println("\nFinal structure for RBF: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
 	}
 }

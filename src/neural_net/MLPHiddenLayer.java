@@ -2,13 +2,32 @@ package neural_net;
 
 import java.util.List;
 
+/**
+ * Class to define default hidden layers (not rbf hidden layers)
+ * 
+ * @author cauth0n
+ * 
+ */
 public class MLPHiddenLayer extends HiddenLayer {
 
+	/**
+	 * 
+	 * Constructor.
+	 * 
+	 * @param numNeurons
+	 */
 	public MLPHiddenLayer(int numNeurons) {
 		super(numNeurons);
 		layerType = "HIDDEN";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * Method to build this layer. All incoming/outgoing connections are built
+	 * 
+	 * @see neural_net.Layer#buildLayer(java.util.List)
+	 */
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 

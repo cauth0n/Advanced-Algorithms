@@ -6,6 +6,12 @@ import solver.ActivationFunction;
 import driver.MachineLearningModel;
 import driver.MachineLearningModelStructure;
 
+/**
+ * Model for NNs. This is not the structure. Rather, it has a structure.
+ * 
+ * @author cauth0n
+ * 
+ */
 public abstract class NeuralNetworkModel implements MachineLearningModel {
 
 	public static ActivationFunction activationFunction;
@@ -15,9 +21,17 @@ public abstract class NeuralNetworkModel implements MachineLearningModel {
 	protected List<Double> inputVector;
 	protected int numOutputNeurons;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param activationFunction
+	 * @param numInputNeurons
+	 * @param inputVector
+	 * @param numOutputNeurons
+	 */
 	public NeuralNetworkModel(ActivationFunction activationFunction, int numInputNeurons, List<Double> inputVector, int numOutputNeurons) {
 		NeuralNetworkModel.activationFunction = activationFunction;
-		
+
 		this.numInputNeurons = numInputNeurons;
 		this.inputVector = inputVector;
 		this.numOutputNeurons = numOutputNeurons;
@@ -32,6 +46,11 @@ public abstract class NeuralNetworkModel implements MachineLearningModel {
 		return neuralNetworkStructure;
 	}
 
+	/**
+	 * Once the layers are made, they are 'stitched' together here. this makes
+	 * it so layers can be iterated through
+	 * 
+	 */
 	public void stitchLayersTogether() {
 		for (int i = neuralNetworkStructure.getLayers().size() - 1; i >= 0; i--) {
 			if (i == neuralNetworkStructure.getLayers().size() - 1) {// output,`
@@ -44,6 +63,9 @@ public abstract class NeuralNetworkModel implements MachineLearningModel {
 		}
 	}
 
+	/**
+	 * Must be called. Builds input and output layers.
+	 */
 	public void constructInputOutputLayers() {
 		neuralNetworkStructure.addInputLayer(); // layer 0
 		neuralNetworkStructure.addOutputLayer(); // layer 1

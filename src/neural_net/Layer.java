@@ -4,23 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Abstract layer definition. Holds information shared across all layers
+ * 
+ * @author cauth0n
+ * 
+ */
 public abstract class Layer {
 
 	protected final double initialNodeValue = 0;
-
 	protected List<Neuron> neurons;
 	protected List<Connection> connections;
-
 	protected int numNeurons;
-
 	protected String layerType;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param numNeurons
+	 */
 	public Layer(int numNeurons) {
 		this.numNeurons = numNeurons;
 		neurons = new ArrayList<>(numNeurons);
 		connections = new ArrayList<>();
 	}
 
+	/**
+	 * 
+	 * Skeleton method to define how a layer is built. I effectively build the
+	 * entire network in reverse fashion, starting with output and ending with
+	 * input. then the layers are stitched together.
+	 * 
+	 * @param downStreamNeurons
+	 */
 	public abstract void buildLayer(List<Neuron> downStreamNeurons);
 
 	public String getLayerType() {
@@ -35,27 +51,11 @@ public abstract class Layer {
 		return neurons;
 	}
 
-	public List<Neuron> getDownstreamNeuronVector() {
-		List<Neuron> downstreamNeuronVector = new ArrayList<>();
-		for (Connection c : connections) {
-			if (c.getToNeuron() == null) {
-				System.out.println("No downstream connection exists. Error.");
-				break;
-			} else {
-				downstreamNeuronVector.add(c.getToNeuron());
-			}
-		}
-		return downstreamNeuronVector;
-	}
-
-	public List<Double> getWeightVector() {
-		List<Double> weightVector = new ArrayList<>(connections.size());
-		for (int i = 0; i < connections.size(); i++) {
-			weightVector.add(connections.get(i).getWeight());
-		}
-		return weightVector;
-	}
-
+	/**
+	 * Gets a random weight in the range of [-1,1]
+	 * 
+	 * @return that random weight
+	 */
 	public double getRandomWeight() {
 		Random rand = new Random();
 		double toRet = rand.nextDouble();
@@ -68,8 +68,7 @@ public abstract class Layer {
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(layerType + ": " + " total neurons: " + neurons.size() + "; connections per neuron: "
-				+ (connections.size() / neurons.size()));
+		stringBuilder.append(layerType + ": " + " total neurons: " + neurons.size() + "; connections per neuron: " + (connections.size() / neurons.size()));
 
 		stringBuilder.append("\n<");
 		for (Neuron n : neurons) {

@@ -1,23 +1,39 @@
 package neural_net;
 
+/**
+ * Connection class. Defines a connection between neurons
+ * 
+ * @author cauth0n
+ * 
+ */
 public class Connection {
 
 	private Neuron toNeuron;
 	private Neuron fromNeuron;
 	private double weight;
-
 	private double deltaWeight;
 	private double momentumDeltaWeight;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param fromNeuron
+	 * @param toNeuron
+	 * @param weight
+	 */
 	public Connection(Neuron fromNeuron, Neuron toNeuron, double weight) {
 		this.toNeuron = toNeuron;
 		this.fromNeuron = fromNeuron;
 		this.weight = weight;
 		deltaWeight = 0;
 		momentumDeltaWeight = 0;
-
 	}
 
+	/**
+	 * Appends a weight to the current weight
+	 * 
+	 * @param weightToAppend
+	 */
 	public void appendWeight(double weightToAppend) {
 		this.weight += weightToAppend;
 	}

@@ -5,6 +5,16 @@ import java.util.List;
 
 import solver.ActivationFunction;
 
+/**
+ * 
+ * Class to define neuron. A neuron has a value, activation function, and
+ * incomign and outgoing connections.
+ * 
+ * I am not commenting the getters and setters.
+ * 
+ * @author cauth0n
+ * 
+ */
 public class Neuron {
 
 	protected ActivationFunction activationFunction;
@@ -13,6 +23,12 @@ public class Neuron {
 	protected double neuronValue;
 	protected double neuronError;
 
+	/**
+	 * Constructor;
+	 * 
+	 * @param activationFunction
+	 * @param neuronValue
+	 */
 	public Neuron(ActivationFunction activationFunction, double neuronValue) {
 		this.activationFunction = activationFunction;
 		this.neuronValue = neuronValue;
@@ -21,10 +37,21 @@ public class Neuron {
 		this.neuronError = 0;
 	}
 
+	/**
+	 * getter for activation function
+	 * 
+	 * @return activation function of this neuron
+	 */
 	public ActivationFunction getActivationFunction() {
 		return activationFunction;
 	}
 
+	/**
+	 * 
+	 * getter for neuron error
+	 * 
+	 * @return neruon error
+	 */
 	public double getNeuronError() {
 		return neuronError;
 	}
@@ -55,22 +82,6 @@ public class Neuron {
 
 	public List<Connection> getOutgoingConnectionsFromThisNeuron() {
 		return outgoingConnectionsFromThisneuron;
-	}
-
-	public List<Neuron> getOutgoingNeurons() {
-		List<Neuron> retVal = new ArrayList<>();
-		for (Connection c : outgoingConnectionsFromThisneuron) {
-			retVal.add(c.getToNeuron());
-		}
-		return retVal;
-	}
-
-	public List<Neuron> getIncomingNeurons() {
-		List<Neuron> retVal = new ArrayList<>();
-		for (Connection c : incomingConnectionsToThisNeuron) {
-			retVal.add(c.getFromNeuron());
-		}
-		return retVal;
 	}
 
 	public double getNeuronValue() {

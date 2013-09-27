@@ -9,28 +9,51 @@ import neural_net.Neuron;
 import validation.DataPoint;
 
 /**
+ * Class to define how to solve a radial basis neural net.
+ * 
  * @author cauthon
  */
 public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 
-	public RadialBasisStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta, List<DataPoint> trainingSet) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param neuralNetStructure
+	 *            neural net to solve
+	 * @param alpha
+	 *            momentum value alpha
+	 * @param eta
+	 *            learning value eta.
+	 */
+	public RadialBasisStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
 		super(neuralNetStructure, alpha, eta);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * Main training loop for radial basis NNs. Feed forwards, then back props 1
+	 * layer.
+	 * 
+	 * @see
+	 * solver.MachineLearningAlgorithmStrategy#mainTrainingLoop(validation.DataPoint
+	 * )
+	 */
 	@Override
 	public double mainTrainingLoop(DataPoint d) {
 		double errorFromThisRound = 0.0;
-
 		targetOutput = d.getNormalizedOutput();
 		feedForward(d.getInputValues());
 		backPropagateWeightErrors();
-		// System.out.println(targetOutput);
-		// pause();
-
 		errorFromThisRound = Math.abs(getNNOutput() - targetOutput);
 		return errorFromThisRound;
 	}
 
+	/**
+	 * Method to propagate error backwards from the output to the hidden layer.
+	 * That is the only error propagation that is needed.
+	 * 
+	 */
 	public void backPropagateWeightErrors() {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			if (l.getLayerType().equals("RBFHIDDEN")) {
@@ -45,6 +68,13 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * From the input values, feeds values through the network.
+	 * 
+	 * @see solver.FeedForwardNeuralNetworkStrategy#feedForward(java.util.List)
+	 */
 	public void feedForward(List<Double> inputValues) {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			switch (l.getLayerType()) {
@@ -74,12 +104,6 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 				break;
 			}
 		}
-	}
-
-	@Override
-	public double mainTestLoop(DataPoint d) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

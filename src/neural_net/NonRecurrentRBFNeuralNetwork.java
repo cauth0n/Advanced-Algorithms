@@ -62,7 +62,7 @@ public class NonRecurrentRBFNeuralNetwork extends NeuralNetworkModel {
 					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
 						centerVector.add(c.getWeight());
 					}
-					n.setActivationFunction(new GaussianBasis(centerVector, numNeuronsPerHiddenLayer));
+					n.setActivationFunction(new GaussianBasis(centerVector));
 				}
 			}
 		}

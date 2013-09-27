@@ -12,6 +12,9 @@ import validation.Validation;
 import driver.MachineLearningModel;
 
 /**
+ * Class to solve whatever algorithm is thrown at is. Is effectively the client
+ * of many strategy patterns.
+ * 
  * @author cauthon
  */
 public class Solver {
@@ -23,6 +26,20 @@ public class Solver {
 	private MachineLearningAlgorithmStrategy solveStrategy;
 	private StoppingCondition stoppingCondition;
 
+	/**
+	 * Constructor. All fields required for object instantiation
+	 * 
+	 * @param machineLearningModel
+	 *            model of machine learning
+	 * @param validation
+	 *            method of validation
+	 * @param alpha
+	 *            whatever learning rate alpha may be
+	 * @param eta
+	 *            whatever learning rate eta may be
+	 * @param stoppingCondition
+	 *            how to determine when a training round is complete.
+	 */
 	public Solver(MachineLearningModel machineLearningModel, Validation validation, double alpha, double eta, StoppingCondition stoppingCondition) {
 		this.machineLearningModel = machineLearningModel;
 		this.validation = validation;
@@ -31,6 +48,15 @@ public class Solver {
 		this.stoppingCondition = stoppingCondition;
 	}
 
+	/**
+	 * Use the backprop algorithm. Strategy pattern call here.
+	 * 
+	 * The key part of this method is the first line (solveStrategy = ...) This
+	 * effectively sets the instance variable to a certain strategy, as defined
+	 * by the method.
+	 * 
+	 * Handles iterations of back prop training and validation.
+	 */
 	public void useBackPropStrategy() {
 		solveStrategy = new BackPropagationStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
 		// this cast is not pretty, but I don't know what else to do.
@@ -38,52 +64,88 @@ public class Solver {
 		validation.contructCrossValidationMethod();
 		validation.normalizeOutputs();
 
-		double errorFromTrainingRounds = Double.MAX_VALUE;
-		stoppingCondition.reset();
-
-		while (!stoppingCondition.isDone()) {
-			errorFromTrainingRounds = train();
-			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+		List<Long> timeStamps = new ArrayList<>();
+		List<Double> err = new ArrayList<>();
+		long startTime;
+		long endTime;
+		for (int i = 0; i < 10; i++) {
+			double errorFromTrainingRounds = Double.MAX_VALUE;
+			startTime = System.currentTimeMillis();
+			stoppingCondition.reset();
+			System.out.println(i);
+			for (int j = 0; j < 1000; j++) {
+				// while (!stoppingCondition.isDone()) {
+				errorFromTrainingRounds = train();
+				stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+			}
+			endTime = System.currentTimeMillis();
+			timeStamps.add(endTime - startTime);
+			err.add(validate());
 		}
-
-		System.out.println("Final structure: ");
-		System.out.print(machineLearningModel.getModelStructure().toString());
-
+		System.out.println("Back Prop Times");
+		for (Long l : timeStamps) {
+			System.out.println(l + "");
+		}
+		System.out.println("\n Back Prop Error");
+		for (Double d : err) {
+			System.out.println(d + "");
+		}
 	}
 
+	/**
+	 * Method which defines how to train a specific neural network model.
+	 * 
+	 * Loops through all data points, gathering sum of normalized errors.
+	 * 
+	 * @return summed error across all data points.
+	 */
 	public double train() {
 		double errorFromTrainRound = 0.0;
 		for (DataPoint d : validation.getTrainingSet()) {
 			errorFromTrainRound += solveStrategy.mainTrainingLoop(d);
-
 		}
-		errorFromTrainRound /= validation.getTestSet().size();
+		errorFromTrainRound /= validation.getValidationSet().size();
 		return errorFromTrainRound;
 	}
 
-	public double test() {
+	/**
+	 * Method to validate how much error is produced from the runthrough of the
+	 * validation set in the model
+	 * 
+	 * @return sum of normalized error.
+	 */
+	public double validate() {
 		double output = 0.0;
-		for (DataPoint d : validation.getTestSet()) {
-
-			System.out.println(d.toString());
+		for (DataPoint d : validation.getValidationSet()) {
 			output = solveStrategy.mainTestLoop(d);
-			output = d.getNormalizedOutput() - output;
+			output += Math.abs(d.getNormalizedOutput() - output);
 		}
 		return output;
 	}
 
+	/**
+	 * Method specific to radial basis neural networks. Places a number of
+	 * centers at the Gaussian in each hidden layer, where the centers are
+	 * randomly gathered from all the data points.
+	 */
 	public void assignCentersFromDataPool() {
 		for (Layer l : ((NeuralNetworkStructure) (machineLearningModel.getModelStructure())).getLayers()) {
 			if (l.getLayerType().equals("RBFHIDDEN")) {
 				for (Neuron n : l.getNeuronVector()) {
 					List<Double> centers = getCentersFromRandomDataPoint();
-					n.setActivationFunction(new GaussianBasis(centers, l.getNeuronVector().size()));
+					n.setActivationFunction(new GaussianBasis(centers));
 				}
 			}
 		}
 	}
 
-	public List<Double> getCentersFromRandomDataPoint() {
+	/**
+	 * private method used for RBF nets. As the name suggests, it gets centers
+	 * for a Gaussian from random data points.
+	 * 
+	 * @return vector corresponding to Gaussian center
+	 */
+	private List<Double> getCentersFromRandomDataPoint() {
 		List<Double> toRet = new ArrayList<>();
 		Random rand = new Random();
 
@@ -95,21 +157,41 @@ public class Solver {
 		return toRet;
 	}
 
+	/**
+	 * Method to use the RBF strategy to solve RBF nets. Very similar to the
+	 * backprop strategy.
+	 * 
+	 */
 	public void useRadialBaseStrategy() {
 
 		validation.contructCrossValidationMethod();
 		validation.normalizeOutputs();
 		assignCentersFromDataPool();
-		solveStrategy = new RadialBasisStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta, validation.getTrainingSet());
-
-		double errorFromTrainingRounds = Double.MAX_VALUE;
-		stoppingCondition.reset();
-
-		while (!stoppingCondition.isDone()) {
-			errorFromTrainingRounds = train();
-			stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+		solveStrategy = new RadialBasisStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
+		List<Long> timeStamps = new ArrayList<>();
+		List<Double> err = new ArrayList<>();
+		long startTime;
+		long endTime;
+		for (int i = 0; i < 10; i++) {
+			double errorFromTrainingRounds = Double.MAX_VALUE;
+			startTime = System.currentTimeMillis();
+			stoppingCondition.reset();
+			System.out.println(i);
+			while (!stoppingCondition.isDone()) {
+				errorFromTrainingRounds = train();
+				stoppingCondition.postRoundOperation(errorFromTrainingRounds);
+			}
+			endTime = System.currentTimeMillis();
+			timeStamps.add(endTime - startTime);
+			err.add(validate());
 		}
-
-		// test();
+		System.out.println("RBF Times");
+		for (Long l : timeStamps) {
+			System.out.println(l + "");
+		}
+		System.out.println("\n RBF Error");
+		for (Double d : err) {
+			System.out.println(d + "");
+		}
 	}
 }

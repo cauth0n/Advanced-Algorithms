@@ -1,14 +1,13 @@
 package solver;
 
 import java.util.List;
-import java.util.Scanner;
 
-import neural_net.Connection;
-import neural_net.Layer;
 import neural_net.NeuralNetworkStructure;
-import neural_net.Neuron;
+import validation.DataPoint;
 
 /**
+ * Class to define methods used in solving feed forward neural nets
+ * 
  * @author cauthon
  */
 public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgorithmStrategy {
@@ -18,25 +17,60 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 	protected double eta;
 	protected double targetOutput;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param neuralNetStructure
+	 *            structure of neural net
+	 * @param alpha
+	 *            momentum rate
+	 * @param eta
+	 *            learning rate
+	 */
 	public FeedForwardNeuralNetworkStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
 		this.neuralNetStructure = neuralNetStructure;
 		this.alpha = alpha;
 		this.eta = eta;
 	}
 
+	/**
+	 * print structure to console
+	 */
 	public void print() {
 		System.out.println(neuralNetStructure.toString());
 	}
 
-	public void pause() {
-		System.out.println(neuralNetStructure.toString());
-		Scanner in = new Scanner(System.in);
-		System.out.println("Press enter to continue");
-		String go = in.next();
-	}
+	/**
+	 * Defining property of a feed forward network -- from input values, run
+	 * them through the net.
+	 * 
+	 * @param inputValues
+	 *            values to feed through net
+	 */
+	public abstract void feedForward(List<Double> inputValues);
 
+	/**
+	 * gets the output from the feed forward net. Assumes only ONE output
+	 * neuron.
+	 * 
+	 * @return
+	 */
 	public double getNNOutput() {
 		return neuralNetStructure.getLayers().get(neuralNetStructure.getLayers().size() - 1).getNeuronVector().get(0).getNeuronValue();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * Tests the net by feeding data forward, then retuns output
+	 * 
+	 * @see
+	 * solver.MachineLearningAlgorithmStrategy#mainTestLoop(validation.DataPoint
+	 * )
+	 */
+	public double mainTestLoop(DataPoint d) {
+		feedForward(d.getInputValues());
+		return getNNOutput();
 	}
 
 }

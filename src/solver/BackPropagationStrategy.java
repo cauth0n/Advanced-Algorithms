@@ -9,23 +9,39 @@ import neural_net.Neuron;
 import validation.DataPoint;
 
 /**
+ * Class to apply backprop learning to a ff nn
+ * 
  * @author cauthon
  */
 public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param neuralNetStructure
+	 *            neural net structure
+	 * @param alpha
+	 *            momentum value
+	 * @param eta
+	 *            learning rate
+	 */
 	public BackPropagationStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
 		super(neuralNetStructure, alpha, eta);
 	}
 
-	public double mainTestLoop(DataPoint d) {
-		feedForward(d.getInputValues());
-		return getNNOutput();
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * Main training loop. Takes in a data point, feeds forwards, then backprops
+	 * 
+	 * @see
+	 * solver.MachineLearningAlgorithmStrategy#mainTrainingLoop(validation.DataPoint
+	 * )
+	 */
 	public double mainTrainingLoop(DataPoint d) {
 		double errorFromThisRound = 0.0;
 		targetOutput = d.getNormalizedOutput();
-		
+
 		feedForward(d.getInputValues());
 		backPropagateError();
 		backPropagateWeightErrors();
@@ -33,7 +49,11 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		errorFromThisRound = Math.abs(getNNOutput() - targetOutput);
 		return errorFromThisRound;
 	}
-	
+
+	/**
+	 * Method for updating weights according to how much change in weight is
+	 * accumulated
+	 */
 	public void updateWeights() {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			for (Connection c : l.getConnectionVector()) {
@@ -43,6 +63,10 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
+	/**
+	 * As the name suggests, propagates weight errors backwards, setting a delta
+	 * weight for each Connection c
+	 */
 	public void backPropagateWeightErrors() {
 		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
 
@@ -53,6 +77,10 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
+	/**
+	 * Switch method to determine how to propagate error backwards.
+	 * 
+	 */
 	public void backPropagateError() {
 		for (int i = neuralNetStructure.getLayers().size() - 1; i >= 0; i--) {
 			// skipping input layer
@@ -70,6 +98,14 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
+	/**
+	 * Figures out how much 'error' is associated with each neuron by deriving
+	 * the neuron and multiplying a 'error' by it. This is for output neurons
+	 * only
+	 * 
+	 * @param l
+	 *            layer we are in
+	 */
 	public void calculateOutputErrorSignals(Layer l) {
 		for (Neuron n : l.getNeuronVector()) {
 			double delta = -1 * ((targetOutput - n.getNeuronValue()) * n.getActivationDerivative());
@@ -77,6 +113,14 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
+	/**
+	 * Figures out how much 'error' is associated with each neuron by deriving
+	 * the neuron and multiplying a 'error' by it. This is for hidden neurons
+	 * only
+	 * 
+	 * @param l
+	 *            layer we are in
+	 */
 	public void calculateHiddenErrorSignals(Layer l) {
 		double runningSum;
 
@@ -90,6 +134,13 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * Feed forward part.
+	 * 
+	 * @see solver.FeedForwardNeuralNetworkStrategy#feedForward(java.util.List)
+	 */
 	public void feedForward(List<Double> inputValues) {
 		for (Layer l : neuralNetStructure.getLayers()) {
 			switch (l.getLayerType()) {

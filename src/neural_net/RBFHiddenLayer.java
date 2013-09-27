@@ -3,15 +3,31 @@ package neural_net;
 import java.util.List;
 
 /**
+ * Class which is a RBF hidden layer. This layer has a Gaussian activation
+ * function.
+ * 
  * @author cauthon
  */
 public class RBFHiddenLayer extends HiddenLayer {
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param numNeurons
+	 *            number of neurons in this layer
+	 */
 	public RBFHiddenLayer(int numNeurons) {
 		super(numNeurons);
 		layerType = "RBFHIDDEN";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * How we construct this layer.
+	 * 
+	 * @see neural_net.Layer#buildLayer(java.util.List)
+	 */
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {

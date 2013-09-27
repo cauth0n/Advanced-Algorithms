@@ -2,29 +2,37 @@ package validation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+/**
+ * Class for generating data points from the rosenbrock function
+ * 
+ * @author cauth0n
+ * 
+ */
 public class RosenbrockDataPointGenerator extends DataPointGenerator {
 	private int vectorSize;
 	private double inputRange;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param vectorSize
+	 *            vector that inputs in the rosenbrock function
+	 * @param inputRange
+	 *            +- real number range in which data points are randomly chosen
+	 *            from
+	 */
 	public RosenbrockDataPointGenerator(int vectorSize, double inputRange) {
 		this.vectorSize = vectorSize;
 		this.inputRange = inputRange;
 	}
 
-	@Override
-	protected double getRandomValueInRange(double range) {
-		Random rand = new Random();
-		double returnValue = 0.0;
-		if (rand.nextBoolean()) {
-			returnValue = range * rand.nextDouble();
-		} else {
-			returnValue = -1 * range * rand.nextDouble();
-		}
-		return returnValue;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see validation.DataPointGenerator#getNewDataPoint() gets a new data
+	 * point from the input's range
+	 */
 	@Override
 	public RosenbrockDataPoint getNewDataPoint() {
 		RosenbrockDataPoint dataPoint;
@@ -40,6 +48,12 @@ public class RosenbrockDataPointGenerator extends DataPointGenerator {
 		return dataPoint;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see validation.DataPointGenerator#getFunctionOutput(java.util.List) run
+	 * the rosenbrock function on me, return the output value.
+	 */
 	@Override
 	public double getFunctionOutput(List<Double> inputValues) {
 		double functionOutput = 0.0;

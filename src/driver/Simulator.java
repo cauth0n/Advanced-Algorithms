@@ -8,7 +8,6 @@ import neural_net.NonRecurrentNeuralNetwork;
 import neural_net.NonRecurrentRBFNeuralNetwork;
 import solver.ActivationFunction;
 import solver.ConvergenceStoppingConditionUsingLinearRegression;
-import solver.LinearActivationFunction;
 import solver.SigmoidActivationFunction;
 import solver.Solver;
 import solver.StoppingCondition;
@@ -36,25 +35,25 @@ public class Simulator {
 	private Solver solver;
 	private StoppingCondition stoppingCondition;
 	private List<Double> inputVector;
-	private int numInputNeurons = 2;
+	private int numInputNeurons = 5;
 	private int numOutputNeurons = 1;
-	private int numHiddenLayers = 2;
-	private int numNeuronsPerHiddenLayer = 1000;
-	private double eta = .1;
+	private int numHiddenLayers = 0;
+	private int numNeuronsPerHiddenLayer = 100;
+	private double eta = .4;
 	private double alpha = 0;
 
 	private int rosenbrockVectorSize = numInputNeurons;
-	private double dataPointRange = 1;
+	private double dataPointRange = 2;
 	private int numDataPoints = 100;
 	private int k = 10;
-	private double stoppingConditionSlope = 0.0001;
+	private double stoppingConditionSlope = 0.00001;
 
 	public Simulator() {
 		getInitialInputVector();
 		buildKFoldCrossValidation();
-		// buildBackPropModel();
+		buildBackPropModel();
 
-		buildRBFModel();
+		// buildRBFModel();
 	}
 
 	public void buildKFoldCrossValidation() {
@@ -82,10 +81,6 @@ public class Simulator {
 		neuralNet.buildModelStructure();
 		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
 		solver.useBackPropStrategy();
-	}
-
-	public void linearActivation() {
-		activationFunction = new LinearActivationFunction();
 	}
 
 	public void sigmoidalActivation() {

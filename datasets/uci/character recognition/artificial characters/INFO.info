@@ -1,0 +1,10 @@
+Symbol number	 |		Line number		|  "Line"			|	x1 | y1 | x2 | y2 | euclidean | diag
+A : 1					0					Always line.	
+C : 2					1	
+D : 3					2
+etc.					for all
+
+
+
+
+for all this, the euclidean and diag and line are useles..

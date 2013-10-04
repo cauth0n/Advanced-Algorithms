@@ -1,5 +1,7 @@
 package neural_net;
 
+import java.util.List;
+
 import solver.NeuronFunction;
 
 /**
@@ -16,8 +18,8 @@ public abstract class HiddenLayer extends Layer {
 	 * 
 	 * @param numNeurons
 	 */
-	public HiddenLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
-		super(functionForNeuronsInThisLayer, numNeurons);
+	public HiddenLayer(List<NeuronFunction> neuronFunctionality, int numNeurons) {
+		super(neuronFunctionality, numNeurons);
 	}
 
 }

@@ -14,7 +14,7 @@ import solver.NeuronFunction;
  */
 public abstract class Layer {
 
-	NeuronFunction functionForNeuronsInThisLayer;
+	List<NeuronFunction> neuronFunctionality;
 	protected final double initialNodeValue = 0;
 	protected List<Neuron> neurons;
 	protected List<Connection> connections;
@@ -26,8 +26,8 @@ public abstract class Layer {
 	 * 
 	 * @param numNeurons
 	 */
-	public Layer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
-		this.functionForNeuronsInThisLayer = functionForNeuronsInThisLayer;
+	public Layer(List<NeuronFunction> neuronFunctionality, int numNeurons) {
+		this.neuronFunctionality = neuronFunctionality;
 		this.numNeurons = numNeurons;
 		neurons = new ArrayList<>(numNeurons);
 		connections = new ArrayList<>();

@@ -1,4 +1,4 @@
-package solver;
+package train;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import validation.DataPoint;
  * 
  * @author cauthon
  */
-public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
+public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 
 	/**
 	 * Constructor.
@@ -25,8 +25,8 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @param eta
 	 *            learning rate
 	 */
-	public BackPropagationStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure, double alpha, double eta) {
-		super(neuralNetStructure, alpha, eta);
+	public GradientDescentStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure) {
+		super(neuralNetStructure);
 	}
 
 	/*

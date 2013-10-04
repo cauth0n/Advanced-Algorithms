@@ -1,17 +1,11 @@
 package neural_net;
 
-/**
- * MLP class, holding everything a perceptron does, but with a numhidden layers
- * variable.
- * 
- * 
- * I may need to add more to this class as I get further.
- * 
- * @author cauth0n
- * 
- * 
- * 
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import solver.NeuronFunction;
+import solver.SigmoidNeuronFunction;
+
 public class MLPStructureFactory extends AbstractNeuralNetworkStructureFactory {
 
 	public MLPStructureFactory(NeuralNetworkStructuralInfo structuralInfo) {
@@ -25,4 +19,14 @@ public class MLPStructureFactory extends AbstractNeuralNetworkStructureFactory {
 		stitchLayersTogether();
 	}
 
+	@Override
+	public void addHiddenLayers() {
+		for (int i = 1; i < structuralInfo.getNumHiddenLayers() + 1; i++) {
+			List<NeuronFunction> hiddenNeuronFunctionality = new ArrayList<>();
+			for (int j = 0; j < structuralInfo.getNumHiddenLayerNeurons(); j++) {
+				hiddenNeuronFunctionality.add(new SigmoidNeuronFunction());
+			}
+			layers.add(i, new MLPHiddenLayer(hiddenNeuronFunctionality, structuralInfo.getNumHiddenLayerNeurons()));
+		}
+	}
 }

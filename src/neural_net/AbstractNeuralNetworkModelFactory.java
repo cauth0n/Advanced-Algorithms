@@ -1,5 +1,6 @@
 package neural_net;
 
+import train.TrainingMethod;
 import driver.MachineLearningModel;
 import driver.MachineLearningModelStructure;
 
@@ -13,15 +14,10 @@ public abstract class AbstractNeuralNetworkModelFactory implements MachineLearni
 
 	protected AbstractNeuralNetworkStructureFactory neuralNetworkStructure;
 	protected NeuralNetworkStructuralInfo structuralInfo;
+	protected NeuralNetwork
+	protected TrainingMethod trainingMethod;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param activationFunction
-	 * @param numInputNeurons
-	 * @param inputVector
-	 * @param numOutputNeurons
-	 */
+
 	public AbstractNeuralNetworkModelFactory(NeuralNetworkStructuralInfo structuralInfo) {
 		this.structuralInfo = structuralInfo;
 	}
@@ -32,6 +28,10 @@ public abstract class AbstractNeuralNetworkModelFactory implements MachineLearni
 
 	public MachineLearningModelStructure getModelStructure() {
 		return neuralNetworkStructure;
+	}
+
+	public void buildModelStructure() {
+		neuralNetworkStructure.buildStructure();
 	}
 
 }

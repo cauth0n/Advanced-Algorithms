@@ -11,7 +11,7 @@ import driver.Simulator;
  * 
  * @author cauthon
  */
-public class GaussianBasis extends NeuronFunction {
+public class GaussianFunction extends NeuronFunction {
 
 	private double sigma = 5;
 	private List<Double> centerVector;
@@ -23,8 +23,7 @@ public class GaussianBasis extends NeuronFunction {
 	 * @param centerVector
 	 *            the vector of the center of this Gaussian.
 	 */
-	public GaussianBasis(List<Double> centerVector) {
-		this.centerVector = centerVector;
+	public GaussianFunction() {
 	}
 
 	/**

@@ -1,4 +1,5 @@
-package solver;
+package train;
+
 
 /**
  * Very abstract class for defining strategies for solving neural nets. This has
@@ -6,6 +7,6 @@ package solver;
  * 
  * @author cauthon
  */
-public abstract class NeuralNetworkAlgorithmStrategy implements MachineLearningAlgorithmStrategy {
+public interface NeuralNetworkAlgorithmStrategy {
 
 }

@@ -1,13 +1,8 @@
-package solver;
+package train;
 
 import validation.DataPoint;
 
-/**
- * Interface for describing how machine learning algorithms will be solved.
- * 
- * @author cauthon
- */
-public interface MachineLearningAlgorithmStrategy {
+public interface TrainingMethod {
 
 	/**
 	 * Main training loop. Takes in a data point, performs whatever learning

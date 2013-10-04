@@ -18,8 +18,8 @@ public class OutputLayer extends Layer {
 	 * @param numNeurons
 	 *            number neruons in this layer.
 	 */
-	public OutputLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
-		super(functionForNeuronsInThisLayer, numNeurons);
+	public OutputLayer(List<NeuronFunction> neuronFunctionality, int numNeurons) {
+		super(neuronFunctionality, numNeurons);
 		layerType = "OUTPUT";
 	}
 
@@ -33,7 +33,7 @@ public class OutputLayer extends Layer {
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
-			Neuron n = new Neuron(functionForNeuronsInThisLayer, initialNodeValue);
+			Neuron n = new Neuron(neuronFunctionality.get(i), initialNodeValue);
 			neurons.add(n);
 		}
 	}

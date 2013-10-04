@@ -17,10 +17,8 @@ import driver.MachineLearningModelStructure;
 public abstract class AbstractNeuralNetworkStructureFactory implements MachineLearningModelStructure {
 
 	protected List<Layer> layers;
-
 	protected InputLayer inputLayer;
 	protected OutputLayer outputLayer;
-
 	protected NeuralNetworkStructuralInfo structuralInfo;
 
 	public AbstractNeuralNetworkStructureFactory(NeuralNetworkStructuralInfo structuralInfo) {
@@ -35,7 +33,7 @@ public abstract class AbstractNeuralNetworkStructureFactory implements MachineLe
 	/**
 	 * Adds an input layer
 	 */
-	public void addInputLayer(NeuronFunction inputNeuronFunctionality) {
+	public void addInputLayer(List<NeuronFunction> inputNeuronFunctionality) {
 		inputLayer = new InputLayer(inputNeuronFunctionality, structuralInfo.getNumInputNeurons());
 		layers.add(inputLayer);
 	}
@@ -43,7 +41,7 @@ public abstract class AbstractNeuralNetworkStructureFactory implements MachineLe
 	/**
 	 * Adds an output layer.
 	 */
-	public void addOutputLayer(NeuronFunction outputNeuronFunctionality) {
+	public void addOutputLayer(List<NeuronFunction> outputNeuronFunctionality) {
 		outputLayer = new OutputLayer(outputNeuronFunctionality, structuralInfo.getNumOutputNeurons());
 		layers.add(outputLayer);
 	}
@@ -55,11 +53,11 @@ public abstract class AbstractNeuralNetworkStructureFactory implements MachineLe
 	 */
 	public void stitchLayersTogether() {
 		for (int i = layers.size() - 1; i >= 0; i--) {
-			if (i == layers.size() - 1) {// output,`
-											// downStreamNeurons
-				// are null.
+			if (i == layers.size() - 1) {
+				// output, downStreamNeurons are null.
 				layers.get(i).buildLayer(null);
-			} else { // evertyhing else.
+			} else {
+				// evertyhing else.
 				layers.get(i).buildLayer(layers.get(i + 1).getNeuronVector());
 			}
 		}
@@ -69,32 +67,21 @@ public abstract class AbstractNeuralNetworkStructureFactory implements MachineLe
 	 * Must be called. Builds input and output layers.
 	 */
 	public void constructInputOutputLayers() {
-		NeuronFunction inputNeuronFunctionality = new LinearNeuronFunction();
-		NeuronFunction outputNeuronFunctionality = new SigmoidNeuronFunction();
+		List<NeuronFunction> inputNeuronFunctionality = new ArrayList<>();
+		List<NeuronFunction> outputNeuronFunctionality = new ArrayList<>();
+		for (int i = 0; i < structuralInfo.getNumInputNeurons(); i++) {
+			inputNeuronFunctionality.add(new LinearNeuronFunction());
+		}
+
+		for (int i = 0; i < structuralInfo.getNumOutputNeurons(); i++) {
+			outputNeuronFunctionality.add(new SigmoidNeuronFunction());
+		}
 
 		addInputLayer(inputNeuronFunctionality); // layer 0
 		addOutputLayer(outputNeuronFunctionality); // layer 1
 	}
 
-	/**
-	 * Adds all the hidden layers to the model
-	 * 
-	 */
-	public void addHiddenLayers() {
-		for (int i = 1; i < numHiddenLayers + 1; i++) {
-			neuralNetworkStructure.addHiddenLayer(i, new MLPHiddenLayer(numNeuronsPerHiddenLayer));
-		}
-	}
-
-	/**
-	 * Adds a hidden layer at the specified position
-	 * 
-	 * @param position
-	 * @param layerToAdd
-	 */
-	public void addHiddenLayer(int position, HiddenLayer layerToAdd) {
-		layers.add(position, layerToAdd);
-	}
+	public abstract void addHiddenLayers();
 
 	@Override
 	public String toString() {

@@ -1,4 +1,4 @@
-package solver;
+package train;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import neural_net.AbstractNeuralNetworkStructureFactory;
 import neural_net.Connection;
 import neural_net.Layer;
 import neural_net.Neuron;
+import solver.GaussianFunction;
 import validation.DataPoint;
 
 /**
@@ -25,8 +26,8 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @param eta
 	 *            learning value eta.
 	 */
-	public RadialBasisStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure, double alpha, double eta) {
-		super(neuralNetStructure, alpha, eta);
+	public RadialBasisStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure) {
+		super(neuralNetStructure);
 	}
 
 	/*
@@ -81,7 +82,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 
 			case "RBFHIDDEN":
 				for (Neuron n : l.getNeuronVector()) {
-					((GaussianBasis) n.getActivationFunction()).setXVector(inputValues);
+					((GaussianFunction) n.getActivationFunction()).setXVector(inputValues);
 					n.activate(0.0);
 				}
 				break;

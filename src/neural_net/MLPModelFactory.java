@@ -1,15 +1,12 @@
 package neural_net;
 
+import train.GradientDescentStrategy;
+
 public class MLPModelFactory extends AbstractNeuralNetworkModelFactory {
 
 	public MLPModelFactory(NeuralNetworkStructuralInfo structuralInfo) {
 		super(structuralInfo);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void buildModelStructure() {
 		neuralNetworkStructure = new MLPStructureFactory(structuralInfo);
+		trainingMethod = new GradientDescentStrategy(neuralNetworkStructure);
 	}
-
 }

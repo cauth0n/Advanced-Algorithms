@@ -18,8 +18,8 @@ public class RBFHiddenLayer extends HiddenLayer {
 	 * @param numNeurons
 	 *            number of neurons in this layer
 	 */
-	public RBFHiddenLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
-		super(functionForNeuronsInThisLayer, numNeurons);
+	public RBFHiddenLayer(List<NeuronFunction> neuronFunctionality, int numNeurons) {
+		super(neuronFunctionality, numNeurons);
 		layerType = "RBFHIDDEN";
 	}
 
@@ -33,7 +33,7 @@ public class RBFHiddenLayer extends HiddenLayer {
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new Neuron(functionForNeuronsInThisLayer, initialNodeValue));
+			neurons.add(new Neuron(neuronFunctionality.get(i), initialNodeValue));
 		}
 
 		for (int i = 0; i < neurons.size(); i++) {

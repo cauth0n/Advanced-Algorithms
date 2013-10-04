@@ -18,8 +18,8 @@ public class MLPHiddenLayer extends HiddenLayer {
 	 * 
 	 * @param numNeurons
 	 */
-	public MLPHiddenLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
-		super(functionForNeuronsInThisLayer, numNeurons);
+	public MLPHiddenLayer(List<NeuronFunction> neuronFunctionality, int numNeurons) {
+		super(neuronFunctionality, numNeurons);
 		layerType = "HIDDEN";
 	}
 
@@ -34,7 +34,7 @@ public class MLPHiddenLayer extends HiddenLayer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new Neuron(functionForNeuronsInThisLayer, initialNodeValue));
+			neurons.add(new Neuron(neuronFunctionality.get(i), initialNodeValue));
 		}
 		for (int i = 0; i < neurons.size(); i++) {
 

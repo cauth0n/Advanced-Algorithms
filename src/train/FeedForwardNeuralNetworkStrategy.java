@@ -1,4 +1,4 @@
-package solver;
+package train;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import validation.DataPoint;
 public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgorithmStrategy {
 
 	protected AbstractNeuralNetworkStructureFactory neuralNetStructure;
-	protected double alpha;
-	protected double eta;
+	protected double alpha = 0;
+	protected double eta = .2;
 	protected double targetOutput;
 
 	/**
@@ -27,10 +27,8 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 	 * @param eta
 	 *            learning rate
 	 */
-	public FeedForwardNeuralNetworkStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure, double alpha, double eta) {
+	public FeedForwardNeuralNetworkStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure) {
 		this.neuralNetStructure = neuralNetStructure;
-		this.alpha = alpha;
-		this.eta = eta;
 	}
 
 	/**

@@ -7,8 +7,11 @@ import java.util.Random;
 import neural_net.AbstractNeuralNetworkStructureFactory;
 import neural_net.Layer;
 import neural_net.Neuron;
+import train.GradientDescentStrategy;
+import train.RadialBasisStrategy;
 import validation.DataPoint;
 import validation.Validation;
+import driver.MachineLearningTrainingStrategy;
 import driver.MachineLearningModel;
 
 /**
@@ -23,7 +26,7 @@ public class Solver {
 	private double eta;
 	private MachineLearningModel machineLearningModel;
 	private Validation validation;
-	private MachineLearningAlgorithmStrategy solveStrategy;
+	private MachineLearningTrainingStrategy solveStrategy;
 	private StoppingCondition stoppingCondition;
 
 	/**
@@ -58,7 +61,7 @@ public class Solver {
 	 * Handles iterations of back prop training and validation.
 	 */
 	public void useBackPropStrategy() {
-		solveStrategy = new BackPropagationStrategy((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure(), alpha, eta);
+		solveStrategy = new GradientDescentStrategy((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure(), alpha, eta);
 		// this cast is not pretty, but I don't know what else to do.
 
 		validation.contructCrossValidationMethod();
@@ -135,7 +138,7 @@ public class Solver {
 			if (l.getLayerType().equals("RBFHIDDEN")) {
 				for (Neuron n : l.getNeuronVector()) {
 					List<Double> centers = getCentersFromRandomDataPoint();
-					n.setActivationFunction(new GaussianBasis(centers));
+					n.setActivationFunction(new GaussianFunction(centers));
 				}
 			}
 		}

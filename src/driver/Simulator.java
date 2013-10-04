@@ -46,6 +46,7 @@ public class Simulator {
 	public Simulator() {
 
 		buildKFoldCrossValidation();
+		buildMLPModel(getStructuralInfo());
 
 		// buildRBFModel(getStructuralInfo());
 	}

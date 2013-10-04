@@ -2,6 +2,8 @@ package neural_net;
 
 import java.util.List;
 
+import solver.NeuronFunction;
+
 /**
  * Class to define default hidden layers (not rbf hidden layers)
  * 
@@ -16,8 +18,8 @@ public class MLPHiddenLayer extends HiddenLayer {
 	 * 
 	 * @param numNeurons
 	 */
-	public MLPHiddenLayer(int numNeurons) {
-		super(numNeurons);
+	public MLPHiddenLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
+		super(functionForNeuronsInThisLayer, numNeurons);
 		layerType = "HIDDEN";
 	}
 
@@ -32,7 +34,7 @@ public class MLPHiddenLayer extends HiddenLayer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new Neuron(NeuralNetworkModel.activationFunction, initialNodeValue));
+			neurons.add(new Neuron(functionForNeuronsInThisLayer, initialNodeValue));
 		}
 		for (int i = 0; i < neurons.size(); i++) {
 

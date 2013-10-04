@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import neural_net.AbstractNeuralNetworkStructureFactory;
 import neural_net.Layer;
-import neural_net.NeuralNetworkStructure;
 import neural_net.Neuron;
 import validation.DataPoint;
 import validation.Validation;
@@ -58,7 +58,7 @@ public class Solver {
 	 * Handles iterations of back prop training and validation.
 	 */
 	public void useBackPropStrategy() {
-		solveStrategy = new BackPropagationStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
+		solveStrategy = new BackPropagationStrategy((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure(), alpha, eta);
 		// this cast is not pretty, but I don't know what else to do.
 
 		validation.contructCrossValidationMethod();
@@ -68,7 +68,7 @@ public class Solver {
 		List<Double> err = new ArrayList<>();
 		long startTime;
 		long endTime;
-		System.out.println("Initial structure for backprop: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
+		System.out.println("Initial structure for backprop: \n" + ((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure()).toString());
 		for (int i = 0; i < 10; i++) {
 			double errorFromTrainingRounds = Double.MAX_VALUE;
 			startTime = System.currentTimeMillis();
@@ -91,7 +91,7 @@ public class Solver {
 		for (Double d : err) {
 			System.out.println(d + "");
 		}
-		System.out.println("\nFinal structure for backprop: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
+		System.out.println("\nFinal structure for backprop: \n" + ((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure()).toString());
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class Solver {
 	 * randomly gathered from all the data points.
 	 */
 	public void assignCentersFromDataPool() {
-		for (Layer l : ((NeuralNetworkStructure) (machineLearningModel.getModelStructure())).getLayers()) {
+		for (Layer l : ((AbstractNeuralNetworkStructureFactory) (machineLearningModel.getModelStructure())).getLayers()) {
 			if (l.getLayerType().equals("RBFHIDDEN")) {
 				for (Neuron n : l.getNeuronVector()) {
 					List<Double> centers = getCentersFromRandomDataPoint();
@@ -169,12 +169,12 @@ public class Solver {
 		validation.contructCrossValidationMethod();
 		validation.normalizeOutputs();
 		assignCentersFromDataPool();
-		solveStrategy = new RadialBasisStrategy((NeuralNetworkStructure) machineLearningModel.getModelStructure(), alpha, eta);
+		solveStrategy = new RadialBasisStrategy((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure(), alpha, eta);
 		List<Long> timeStamps = new ArrayList<>();
 		List<Double> err = new ArrayList<>();
 		long startTime;
 		long endTime;
-		System.out.println("Initial structure for RBF: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
+		System.out.println("Initial structure for RBF: \n" + ((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure()).toString());
 		for (int i = 0; i < 10; i++) {
 			double errorFromTrainingRounds = Double.MAX_VALUE;
 			startTime = System.currentTimeMillis();
@@ -196,6 +196,6 @@ public class Solver {
 		for (Double d : err) {
 			System.out.println(d + "");
 		}
-		System.out.println("\nFinal structure for RBF: \n" + ((NeuralNetworkStructure) machineLearningModel.getModelStructure()).toString());
+		System.out.println("\nFinal structure for RBF: \n" + ((AbstractNeuralNetworkStructureFactory) machineLearningModel.getModelStructure()).toString());
 	}
 }

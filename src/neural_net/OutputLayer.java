@@ -2,6 +2,8 @@ package neural_net;
 
 import java.util.List;
 
+import solver.NeuronFunction;
+
 /**
  * Output layer -- neurons just output.
  * 
@@ -16,8 +18,8 @@ public class OutputLayer extends Layer {
 	 * @param numNeurons
 	 *            number neruons in this layer.
 	 */
-	public OutputLayer(int numNeurons) {
-		super(numNeurons);
+	public OutputLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
+		super(functionForNeuronsInThisLayer, numNeurons);
 		layerType = "OUTPUT";
 	}
 
@@ -31,7 +33,7 @@ public class OutputLayer extends Layer {
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
-			Neuron n = new Neuron(NeuralNetworkModel.activationFunction, initialNodeValue);
+			Neuron n = new Neuron(functionForNeuronsInThisLayer, initialNodeValue);
 			neurons.add(n);
 		}
 	}

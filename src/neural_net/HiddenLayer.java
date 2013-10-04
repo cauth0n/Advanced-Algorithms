@@ -1,5 +1,7 @@
 package neural_net;
 
+import solver.NeuronFunction;
+
 /**
  * Abstract class to define what a hidden layer shoudl look like.
  * 
@@ -14,8 +16,8 @@ public abstract class HiddenLayer extends Layer {
 	 * 
 	 * @param numNeurons
 	 */
-	public HiddenLayer(int numNeurons) {
-		super(numNeurons);
+	public HiddenLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
+		super(functionForNeuronsInThisLayer, numNeurons);
 	}
 
 }

@@ -8,7 +8,7 @@ package solver;
  * @author cauth0n
  * 
  */
-public abstract class ActivationFunction {
+public abstract class NeuronFunction {
 
 	/**
 	 * run a value through the function, and return the function's output

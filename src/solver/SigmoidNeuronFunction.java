@@ -7,7 +7,7 @@ package solver;
  * @author cauth0n
  * 
  */
-public class SigmoidActivationFunction extends ActivationFunction {
+public class SigmoidNeuronFunction extends NeuronFunction {
 
 	private double alpha = 1;
 

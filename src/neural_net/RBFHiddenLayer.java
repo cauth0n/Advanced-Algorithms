@@ -2,6 +2,8 @@ package neural_net;
 
 import java.util.List;
 
+import solver.NeuronFunction;
+
 /**
  * Class which is a RBF hidden layer. This layer has a Gaussian activation
  * function.
@@ -16,8 +18,8 @@ public class RBFHiddenLayer extends HiddenLayer {
 	 * @param numNeurons
 	 *            number of neurons in this layer
 	 */
-	public RBFHiddenLayer(int numNeurons) {
-		super(numNeurons);
+	public RBFHiddenLayer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
+		super(functionForNeuronsInThisLayer, numNeurons);
 		layerType = "RBFHIDDEN";
 	}
 
@@ -31,7 +33,7 @@ public class RBFHiddenLayer extends HiddenLayer {
 	@Override
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		for (int i = 0; i < numNeurons; i++) {
-			neurons.add(new Neuron(null, initialNodeValue));
+			neurons.add(new Neuron(functionForNeuronsInThisLayer, initialNodeValue));
 		}
 
 		for (int i = 0; i < neurons.size(); i++) {

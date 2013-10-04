@@ -11,7 +11,7 @@ import driver.Simulator;
  * 
  * @author cauthon
  */
-public class GaussianBasis extends ActivationFunction {
+public class GaussianBasis extends NeuronFunction {
 
 	private double sigma = 5;
 	private List<Double> centerVector;

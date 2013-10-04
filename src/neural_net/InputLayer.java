@@ -3,6 +3,8 @@ package neural_net;
 import java.util.ArrayList;
 import java.util.List;
 
+import solver.NeuronFunction;
+
 /**
  * Input layer class. Holds all information held by the input layer
  * 
@@ -12,7 +14,6 @@ import java.util.List;
 public class InputLayer extends Layer {
 
 	private List<Connection> inputConnections; // unique, for input // layer.
-	private List<Double> inputVector;
 
 	/**
 	 * Constructor
@@ -20,9 +21,8 @@ public class InputLayer extends Layer {
 	 * @param numInputNeurons
 	 * @param inputVector
 	 */
-	public InputLayer(int numInputNeurons, List<Double> inputVector) {
-		super(numInputNeurons);
-		this.inputVector = inputVector;
+	public InputLayer(NeuronFunction functionForNeuronsInThisLayer, int numInputNeurons) {
+		super(functionForNeuronsInThisLayer, numInputNeurons);
 		layerType = "INPUT";
 	}
 
@@ -38,7 +38,7 @@ public class InputLayer extends Layer {
 	public void buildLayer(List<Neuron> downStreamNeurons) {
 		inputConnections = new ArrayList<>();
 		for (int i = 0; i < numNeurons; i++) {
-			Neuron n = new Neuron(NeuralNetworkModel.activationFunction, inputVector.get(i));
+			Neuron n = new Neuron(functionForNeuronsInThisLayer, 0);
 			Connection c = new Connection(null, n, getRandomWeight());
 			/*
 			 * the initial weight bit here may need to change. I may need to

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import solver.NeuronFunction;
+
 /**
  * Abstract layer definition. Holds information shared across all layers
  * 
@@ -12,6 +14,7 @@ import java.util.Random;
  */
 public abstract class Layer {
 
+	NeuronFunction functionForNeuronsInThisLayer;
 	protected final double initialNodeValue = 0;
 	protected List<Neuron> neurons;
 	protected List<Connection> connections;
@@ -23,7 +26,8 @@ public abstract class Layer {
 	 * 
 	 * @param numNeurons
 	 */
-	public Layer(int numNeurons) {
+	public Layer(NeuronFunction functionForNeuronsInThisLayer, int numNeurons) {
+		this.functionForNeuronsInThisLayer = functionForNeuronsInThisLayer;
 		this.numNeurons = numNeurons;
 		neurons = new ArrayList<>(numNeurons);
 		connections = new ArrayList<>();

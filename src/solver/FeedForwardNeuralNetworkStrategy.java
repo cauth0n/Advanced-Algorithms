@@ -2,7 +2,7 @@ package solver;
 
 import java.util.List;
 
-import neural_net.NeuralNetworkStructure;
+import neural_net.AbstractNeuralNetworkStructureFactory;
 import validation.DataPoint;
 
 /**
@@ -12,7 +12,7 @@ import validation.DataPoint;
  */
 public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgorithmStrategy {
 
-	protected NeuralNetworkStructure neuralNetStructure;
+	protected AbstractNeuralNetworkStructureFactory neuralNetStructure;
 	protected double alpha;
 	protected double eta;
 	protected double targetOutput;
@@ -27,7 +27,7 @@ public abstract class FeedForwardNeuralNetworkStrategy extends NeuralNetworkAlgo
 	 * @param eta
 	 *            learning rate
 	 */
-	public FeedForwardNeuralNetworkStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
+	public FeedForwardNeuralNetworkStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure, double alpha, double eta) {
 		this.neuralNetStructure = neuralNetStructure;
 		this.alpha = alpha;
 		this.eta = eta;

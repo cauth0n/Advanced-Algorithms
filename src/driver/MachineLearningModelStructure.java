@@ -11,4 +11,6 @@ package driver;
  */
 public interface MachineLearningModelStructure {
 
+	public void buildStructure();
+
 }

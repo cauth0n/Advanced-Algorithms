@@ -2,9 +2,9 @@ package solver;
 
 import java.util.List;
 
+import neural_net.AbstractNeuralNetworkStructureFactory;
 import neural_net.Connection;
 import neural_net.Layer;
-import neural_net.NeuralNetworkStructure;
 import neural_net.Neuron;
 import validation.DataPoint;
 
@@ -25,7 +25,7 @@ public class BackPropagationStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @param eta
 	 *            learning rate
 	 */
-	public BackPropagationStrategy(NeuralNetworkStructure neuralNetStructure, double alpha, double eta) {
+	public BackPropagationStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure, double alpha, double eta) {
 		super(neuralNetStructure, alpha, eta);
 	}
 

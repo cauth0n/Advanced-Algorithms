@@ -3,7 +3,7 @@ package neural_net;
 import java.util.ArrayList;
 import java.util.List;
 
-import solver.ActivationFunction;
+import solver.NeuronFunction;
 
 /**
  * 
@@ -17,7 +17,7 @@ import solver.ActivationFunction;
  */
 public class Neuron {
 
-	protected ActivationFunction activationFunction;
+	protected NeuronFunction activationFunction;
 	protected List<Connection> incomingConnectionsToThisNeuron;
 	protected List<Connection> outgoingConnectionsFromThisneuron;
 	protected double neuronValue;
@@ -29,7 +29,7 @@ public class Neuron {
 	 * @param activationFunction
 	 * @param neuronValue
 	 */
-	public Neuron(ActivationFunction activationFunction, double neuronValue) {
+	public Neuron(NeuronFunction activationFunction, double neuronValue) {
 		this.activationFunction = activationFunction;
 		this.neuronValue = neuronValue;
 		incomingConnectionsToThisNeuron = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Neuron {
 	 * 
 	 * @return activation function of this neuron
 	 */
-	public ActivationFunction getActivationFunction() {
+	public NeuronFunction getActivationFunction() {
 		return activationFunction;
 	}
 
@@ -92,7 +92,7 @@ public class Neuron {
 		this.neuronValue = neuronValue;
 	}
 
-	public void setActivationFunction(ActivationFunction activationFunction) {
+	public void setActivationFunction(NeuronFunction activationFunction) {
 		this.activationFunction = activationFunction;
 	}
 

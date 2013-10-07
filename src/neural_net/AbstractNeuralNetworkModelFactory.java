@@ -14,7 +14,6 @@ public abstract class AbstractNeuralNetworkModelFactory implements MachineLearni
 
 	protected AbstractNeuralNetworkStructureFactory neuralNetworkStructure;
 	protected NeuralNetworkStructuralInfo structuralInfo;
-	protected NeuralNetwork
 	protected TrainingMethod trainingMethod;
 
 

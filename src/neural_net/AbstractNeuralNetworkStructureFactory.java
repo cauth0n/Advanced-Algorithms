@@ -11,7 +11,7 @@ import driver.MachineLearningModelStructure;
 /**
  * Abstract view of the structure of a NN
  * 
- * @author cauth0n
+ * @author cauth0n 
  * 
  */
 public abstract class AbstractNeuralNetworkStructureFactory implements MachineLearningModelStructure {

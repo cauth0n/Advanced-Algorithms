@@ -1,4 +1,4 @@
-package train;
+package solver;
 
 import java.util.List;
 
@@ -6,15 +6,14 @@ import neural_net.AbstractNeuralNetworkStructureFactory;
 import neural_net.Connection;
 import neural_net.Layer;
 import neural_net.Neuron;
-import solver.GaussianFunction;
-import validation.DataPoint;
+import validation.FunctionApproxDataPoint;
 
 /**
  * Class to define how to solve a radial basis neural net.
  * 
  * @author cauthon
  */
-public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
+public class RadialBasisTraining extends TrainingMethod {
 
 	/**
 	 * Constructor.
@@ -26,7 +25,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @param eta
 	 *            learning value eta.
 	 */
-	public RadialBasisStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure) {
+	public RadialBasisTraining(AbstractNeuralNetworkStructureFactory neuralNetStructure) {
 		super(neuralNetStructure);
 	}
 
@@ -41,7 +40,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * )
 	 */
 	@Override
-	public double mainTrainingLoop(DataPoint d) {
+	public double mainTrainingLoop(FunctionApproxDataPoint d) {
 		double errorFromThisRound = 0.0;
 		targetOutput = d.getNormalizedOutput();
 		feedForward(d.getInputValues());
@@ -56,7 +55,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * 
 	 */
 	public void backPropagateWeightErrors() {
-		for (Layer l : neuralNetStructure.getLayers()) {
+		for (Layer l : neuralNetworkStructure.getLayers()) {
 			if (l.getLayerType().equals("RBFHIDDEN")) {
 				for (Neuron n : l.getNeuronVector()) {
 					for (Connection c : n.getOutgoingConnectionsFromThisNeuron()) {
@@ -77,7 +76,7 @@ public class RadialBasisStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @see solver.FeedForwardNeuralNetworkStrategy#feedForward(java.util.List)
 	 */
 	public void feedForward(List<Double> inputValues) {
-		for (Layer l : neuralNetStructure.getLayers()) {
+		for (Layer l : neuralNetworkStructure.getLayers()) {
 			switch (l.getLayerType()) {
 
 			case "RBFHIDDEN":

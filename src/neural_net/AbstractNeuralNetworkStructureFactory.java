@@ -11,17 +11,19 @@ import driver.MachineLearningModelStructure;
 /**
  * Abstract view of the structure of a NN
  * 
- * @author cauth0n 
+ * @author cauth0n
  * 
  */
-public abstract class AbstractNeuralNetworkStructureFactory implements MachineLearningModelStructure {
+public abstract class AbstractNeuralNetworkStructureFactory implements
+		MachineLearningModelStructure {
 
 	protected List<Layer> layers;
 	protected InputLayer inputLayer;
 	protected OutputLayer outputLayer;
 	protected NeuralNetworkStructuralInfo structuralInfo;
 
-	public AbstractNeuralNetworkStructureFactory(NeuralNetworkStructuralInfo structuralInfo) {
+	public AbstractNeuralNetworkStructureFactory(
+			NeuralNetworkStructuralInfo structuralInfo) {
 		this.structuralInfo = structuralInfo;
 		layers = new ArrayList<>();
 	}
@@ -34,7 +36,8 @@ public abstract class AbstractNeuralNetworkStructureFactory implements MachineLe
 	 * Adds an input layer
 	 */
 	public void addInputLayer(List<NeuronFunction> inputNeuronFunctionality) {
-		inputLayer = new InputLayer(inputNeuronFunctionality, structuralInfo.getNumInputNeurons());
+		inputLayer = new InputLayer(inputNeuronFunctionality,
+				structuralInfo.getNumInputNeurons());
 		layers.add(inputLayer);
 	}
 
@@ -42,7 +45,8 @@ public abstract class AbstractNeuralNetworkStructureFactory implements MachineLe
 	 * Adds an output layer.
 	 */
 	public void addOutputLayer(List<NeuronFunction> outputNeuronFunctionality) {
-		outputLayer = new OutputLayer(outputNeuronFunctionality, structuralInfo.getNumOutputNeurons());
+		outputLayer = new OutputLayer(outputNeuronFunctionality,
+				structuralInfo.getNumOutputNeurons());
 		layers.add(outputLayer);
 	}
 

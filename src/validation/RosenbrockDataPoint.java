@@ -9,7 +9,7 @@ import java.util.List;
  * @author cauth0n
  * 
  */
-public class RosenbrockDataPoint extends DataPoint {
+public class RosenbrockDataPoint extends FunctionApproxDataPoint {
 
 	/**
 	 * constructor.

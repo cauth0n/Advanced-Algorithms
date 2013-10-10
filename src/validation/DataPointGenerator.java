@@ -35,7 +35,7 @@ public abstract class DataPointGenerator {
 	 * 
 	 * @return
 	 */
-	public abstract DataPoint getNewDataPoint();
+	public abstract FunctionApproxDataPoint getNewDataPoint();
 
 	/**
 	 * Finds the output of a function from the inputted vector

@@ -5,11 +5,12 @@ import neural_net.MLPModelFactory;
 import neural_net.NeuralNetworkStructuralInfo;
 import neural_net.RBFModelFactory;
 import solver.ConvergenceStoppingConditionUsingLinearRegression;
-import solver.NeuronFunction;
 import solver.Solver;
 import solver.StoppingCondition;
+import validation.ClassificationDataPoint;
 import validation.DataPointGenerator;
 import validation.KFoldCrossValidation;
+import validation.LetterRecognitionDataPoint;
 import validation.RosenbrockDataPointGenerator;
 import validation.Validation;
 
@@ -24,6 +25,9 @@ import validation.Validation;
  * 
  */
 public class Simulator {
+
+	public static final String letterRecognition = "datasets/letter recognition/letter-recognition.data";
+	public static final int k = 10;
 
 	public static double maxDist = -1 * Double.MAX_VALUE;
 	private AbstractNeuralNetworkModelFactory neuralNet;
@@ -40,19 +44,21 @@ public class Simulator {
 	private int rosenbrockVectorSize = numInputNeurons;
 	private double dataPointRange = 2;
 	private int numDataPoints = 100;
-	private int k = 10;
 	private double stoppingConditionSlope = 0.00001;
 
 	public Simulator() {
 
+		inputLetters();
+
 		buildKFoldCrossValidation();
-		buildMLPModel(getStructuralInfo());
+		// buildMLPModel(getStructuralInfo());
 
 		// buildRBFModel(getStructuralInfo());
 	}
 
 	public NeuralNetworkStructuralInfo getStructuralInfo() {
-		return new NeuralNetworkStructuralInfo(numInputNeurons, numHiddenLayerNeurons, numHiddenLayers, numOutputNeurons);
+		return new NeuralNetworkStructuralInfo(numInputNeurons,
+				numHiddenLayerNeurons, numHiddenLayers, numOutputNeurons);
 	}
 
 	/**
@@ -60,8 +66,10 @@ public class Simulator {
 	 */
 	public void buildKFoldCrossValidation() {
 		DataPointGenerator dataPointGenerator = getRosenbrockDataPointGenerator();
-		validation = new KFoldCrossValidation(numDataPoints, dataPointGenerator, k);
-		stoppingCondition = new ConvergenceStoppingConditionUsingLinearRegression(stoppingConditionSlope);
+		validation = new KFoldCrossValidation(numDataPoints,
+				dataPointGenerator, k);
+		stoppingCondition = new ConvergenceStoppingConditionUsingLinearRegression(
+				stoppingConditionSlope);
 	}
 
 	/**
@@ -70,7 +78,8 @@ public class Simulator {
 	 * @return
 	 */
 	public DataPointGenerator getRosenbrockDataPointGenerator() {
-		DataPointGenerator dpg = new RosenbrockDataPointGenerator(rosenbrockVectorSize, dataPointRange);
+		DataPointGenerator dpg = new RosenbrockDataPointGenerator(
+				rosenbrockVectorSize, dataPointRange);
 		return dpg;
 	}
 
@@ -80,7 +89,8 @@ public class Simulator {
 	public void buildRBFModel(NeuralNetworkStructuralInfo structuralInfo) {
 		neuralNet = new RBFModelFactory(structuralInfo);
 		neuralNet.buildModelStructure();
-		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
+		solver = new Solver(neuralNet, validation, alpha, eta,
+				stoppingCondition);
 		solver.useRadialBaseStrategy();
 	}
 
@@ -90,7 +100,8 @@ public class Simulator {
 	public void buildMLPModel(NeuralNetworkStructuralInfo structuralInfo) {
 		neuralNet = new MLPModelFactory(structuralInfo);
 		neuralNet.buildModelStructure();
-		solver = new Solver(neuralNet, validation, alpha, eta, stoppingCondition);
+		solver = new Solver(neuralNet, validation, alpha, eta,
+				stoppingCondition);
 		solver.useBackPropStrategy();
 	}
 

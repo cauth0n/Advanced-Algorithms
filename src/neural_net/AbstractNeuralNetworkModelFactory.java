@@ -1,6 +1,6 @@
 package neural_net;
 
-import train.TrainingMethod;
+import solver.Solver;
 import driver.MachineLearningModel;
 import driver.MachineLearningModelStructure;
 
@@ -10,14 +10,15 @@ import driver.MachineLearningModelStructure;
  * @author cauth0n
  * 
  */
-public abstract class AbstractNeuralNetworkModelFactory implements MachineLearningModel {
+public abstract class AbstractNeuralNetworkModelFactory implements
+		MachineLearningModel {
 
 	protected AbstractNeuralNetworkStructureFactory neuralNetworkStructure;
 	protected NeuralNetworkStructuralInfo structuralInfo;
-	protected TrainingMethod trainingMethod;
+	protected Solver solver;
 
-
-	public AbstractNeuralNetworkModelFactory(NeuralNetworkStructuralInfo structuralInfo) {
+	public AbstractNeuralNetworkModelFactory(
+			NeuralNetworkStructuralInfo structuralInfo) {
 		this.structuralInfo = structuralInfo;
 	}
 
@@ -32,5 +33,7 @@ public abstract class AbstractNeuralNetworkModelFactory implements MachineLearni
 	public void buildModelStructure() {
 		neuralNetworkStructure.buildStructure();
 	}
+
+	public abstract void initializeSolver();
 
 }

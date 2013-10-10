@@ -1,4 +1,4 @@
-package train;
+package solver;
 
 import java.util.List;
 
@@ -6,14 +6,14 @@ import neural_net.AbstractNeuralNetworkStructureFactory;
 import neural_net.Connection;
 import neural_net.Layer;
 import neural_net.Neuron;
-import validation.DataPoint;
+import validation.FunctionApproxDataPoint;
 
 /**
  * Class to apply backprop learning to a ff nn
  * 
  * @author cauthon
  */
-public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
+public class GradientDescentTraining extends TrainingMethod {
 
 	/**
 	 * Constructor.
@@ -25,22 +25,14 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @param eta
 	 *            learning rate
 	 */
-	public GradientDescentStrategy(AbstractNeuralNetworkStructureFactory neuralNetStructure) {
-		super(neuralNetStructure);
+	public GradientDescentTraining(
+			AbstractNeuralNetworkStructureFactory neuralNetworkStructure) {
+		super(neuralNetworkStructure);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * Main training loop. Takes in a data point, feeds forwards, then backprops
-	 * 
-	 * @see
-	 * solver.MachineLearningAlgorithmStrategy#mainTrainingLoop(validation.DataPoint
-	 * )
-	 */
-	public double mainTrainingLoop(DataPoint d) {
+	public double mainTrainingLoop(FunctionApproxDataPoint d) {
 		double errorFromThisRound = 0.0;
-		targetOutput = d.getNormalizedOutput();
+		double targetOutput = d.getNormalizedOutput();
 
 		feedForward(d.getInputValues());
 		backPropagateError();
@@ -55,9 +47,10 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * accumulated
 	 */
 	public void updateWeights() {
-		for (Layer l : neuralNetStructure.getLayers()) {
+		for (Layer l : neuralNetworkStructure.getLayers()) {
 			for (Connection c : l.getConnectionVector()) {
-				c.appendWeight(c.getDeltaWeight() + alpha * c.getMomentumDeltaWeight());
+				c.appendWeight(c.getDeltaWeight() + alpha
+						* c.getMomentumDeltaWeight());
 				c.updateTimeStep();
 			}
 		}
@@ -68,10 +61,12 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * weight for each Connection c
 	 */
 	public void backPropagateWeightErrors() {
-		for (int i = neuralNetStructure.getLayers().size() - 1; i > 0; i--) {
+		for (int i = neuralNetworkStructure.getLayers().size() - 1; i > 0; i--) {
 
-			for (Connection c : neuralNetStructure.getLayers().get(i).getConnectionVector()) {
-				double value = (-1 * eta * c.getToNeuron().getNeuronError() * c.getFromNeuron().getNeuronValue());
+			for (Connection c : neuralNetworkStructure.getLayers().get(i)
+					.getConnectionVector()) {
+				double value = (-1 * eta * c.getToNeuron().getNeuronError() * c
+						.getFromNeuron().getNeuronValue());
 				c.setDeltaWeight(value);
 			}
 		}
@@ -82,9 +77,9 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * 
 	 */
 	public void backPropagateError() {
-		for (int i = neuralNetStructure.getLayers().size() - 1; i >= 0; i--) {
+		for (int i = neuralNetworkStructure.getLayers().size() - 1; i >= 0; i--) {
 			// skipping input layer
-			Layer l = neuralNetStructure.getLayers().get(i);
+			Layer l = neuralNetworkStructure.getLayers().get(i);
 			switch (l.getLayerType()) {
 			case "OUTPUT":
 				calculateOutputErrorSignals(l);
@@ -108,7 +103,9 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 	 */
 	public void calculateOutputErrorSignals(Layer l) {
 		for (Neuron n : l.getNeuronVector()) {
-			double delta = -1 * ((targetOutput - n.getNeuronValue()) * n.getActivationDerivative());
+			double delta = -1
+					* ((targetOutput - n.getNeuronValue()) * n
+							.getActivationDerivative());
 			n.setNeuronError(delta);
 		}
 	}
@@ -127,7 +124,8 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 		for (Neuron n : l.getNeuronVector()) {
 			runningSum = 0.0;
 			for (Connection nextC : n.getOutgoingConnectionsFromThisNeuron()) {
-				runningSum += nextC.getToNeuron().getNeuronError() * nextC.getWeight();
+				runningSum += nextC.getToNeuron().getNeuronError()
+						* nextC.getWeight();
 			}
 			runningSum *= n.getActivationDerivative();
 			n.setNeuronError(runningSum);
@@ -142,14 +140,15 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 	 * @see solver.FeedForwardNeuralNetworkStrategy#feedForward(java.util.List)
 	 */
 	public void feedForward(List<Double> inputValues) {
-		for (Layer l : neuralNetStructure.getLayers()) {
+		for (Layer l : neuralNetworkStructure.getLayers()) {
 			switch (l.getLayerType()) {
 
 			case "HIDDEN":
 				for (Neuron n : l.getNeuronVector()) {
 					double newNeuronValue = 0.0;
 					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
-						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
+						newNeuronValue += c.getFromNeuron().getNeuronValue()
+								* c.getWeight();
 					}
 					n.activate(newNeuronValue);
 				}
@@ -158,14 +157,16 @@ public class GradientDescentStrategy extends FeedForwardNeuralNetworkStrategy {
 				for (Neuron n : l.getNeuronVector()) {
 					double newNeuronValue = 0.0;
 					for (Connection c : n.getIncomingConnectionsToThisNeuron()) {
-						newNeuronValue += c.getFromNeuron().getNeuronValue() * c.getWeight();
+						newNeuronValue += c.getFromNeuron().getNeuronValue()
+								* c.getWeight();
 					}
 					n.activate(newNeuronValue);
 				}
 				break;
 			case "INPUT":
 				for (int i = 0; i < l.getNeuronVector().size(); i++) {
-					l.getNeuronVector().get(i).setNeuronValue(inputValues.get(i));
+					l.getNeuronVector().get(i)
+							.setNeuronValue(inputValues.get(i));
 				}
 				break;
 			default:
